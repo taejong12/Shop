@@ -1,0 +1,14 @@
+create table shop_member(
+    member_no number primary key,
+    member_id varchar2(20) not null UNIQUE,
+    member_password varchar2(30) not null,
+    member_name varchar2(20) not null,
+    member_email varchar2(50) not null unique,
+    member_role varchar2(20) not null
+);
+
+drop table shop_member;
+
+create sequence shop_member_seq;
+
+drop SEQUENCE shop_member_seq;

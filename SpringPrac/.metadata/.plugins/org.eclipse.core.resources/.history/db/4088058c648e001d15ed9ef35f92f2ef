@@ -1,0 +1,51 @@
+package com.shop.entity;
+
+import java.time.LocalDateTime;
+
+import javax.jdo.annotations.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.shop.dto.MemberDto;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name="shop_member")
+@Getter
+@NoArgsConstructor
+public class MemberEntity {
+
+	@Id
+	@Column
+	private String memberId;
+	
+	@Column
+	private String memberPassword;
+	
+	@Column
+	private String memberName;
+	
+	@Column
+	private String memberEmail;
+	
+	@Column
+	private LocalDateTime memberCreateDate;
+	
+	@Column
+	private String memberRole;
+	
+	@Builder
+	public static MemberEntity toMemberEntity(MemberDto memberDto) {
+		MemberEntity memberEntity = new MemberEntity();
+		
+		// Dto에 담긴 값을 Entity로 옮기는 작업
+		memberEntity.setMemberEmail(memberDto.getMemberEmail());
+		
+	}
+	
+	
+}

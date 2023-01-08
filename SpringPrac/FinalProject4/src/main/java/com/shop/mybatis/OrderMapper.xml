@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.shop.dao.OrderDAO">
+
+ 	<!-- 주문 상품 정보 -->
+	<select id="getGoodsInfo" resultType="com.shop.dto.OrderItemDTO">
+	
+		select al_num, al_name, al_price, al_opic
+		from alcohols where AL_NUM = #{alNum}	
+	
+	</select>
+ 	
+ 	<!-- 주문하기 페이지 -->
+ 	<select id="orderPage" resultType="com.shop.dto.OrderItemDTO">
+ 		select *
+ 		from users
+ 		where username = #{userName}
+ 	</select>	
+ 	
+ 	<!-- 주문내역 목록 -->
+	<select id="getOrderList" resultType="com.shop.dto.OrderItemDTO">	
+		select a.al_opic, a.al_name, o.OR_TOTALAMOUNT, o.OR_PAYSTATUS, o.OR_TOTALPRICE, o.OR_PAYDATE, o.OR_RoadAddress, o.OR_DetailAddress
+		from alcohols a join orders o on o.AL_NUM = a.AL_NUM     
+		            join users u on u.username=o.username
+		where o.username = #{userName}
+	</select>
+	
+	<!-- 결제완료시 저장 -->
+	<insert id="orderInsertDao">
+	<![CDATA[
+			insert into orders(or_num, or_totalamount, or_paystatus, or_totalprice, or_paydate, or_postnum, or_roadaddress, or_detailaddress, al_num, username)
+			values (or_seq.nextval, #{orTotalAmount}, #{orPayStatus}, #{orTotalPrice}, TO_CHAR(SYSDATE, 'YYYY-MM-DD'), #{orPostNum}, #{orRoadAddress}, #{orDetailAddress}, #{alNum}, #{userName})
+	]]>
+	</insert>
+	
+	
+
+</mapper>

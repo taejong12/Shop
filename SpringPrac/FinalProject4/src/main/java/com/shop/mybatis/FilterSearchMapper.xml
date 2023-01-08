@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>  <!-- xml 문서입니다 하는 내용 -->
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.shop.dao.FilterSearchDAO">
+	
+	<!-- 검색 조건문 -->
+    <sql id="FilterCriteriaDTO">
+        <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+            <foreach collection="typeArr" item="type">
+                <trim prefix="OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            al_name like '%'||#{keyword}||'%' 
+                        </when>
+                    </choose>
+                </trim>
+            </foreach>
+        </trim>
+    
+    </sql> 
+	
+	
+	
+	<!-- 게시물 목록(페이징) -->
+	<select id="getListPaging" resultType="com.shop.dto.FilterSearchDTO">		
+			<![CDATA[
+			select k.*, a.al_opic, a.al_name, a.al_abv, a.al_price, a.al_stock, f.*
+			from al_kinds k join (select /*+INDEX_DESC(alcohols alcohols_seq) */ rownum as rnum , AL.* from alcohols AL where rownum <= (#{pageNum} * #{amount}) order by al.al_num desc 
+								) a on k.ki_num=a.ki_num
+		                	join flavors f on a.al_num=f.al_num
+		  ]]>
+		   <if test="keyword != null">
+              	and a.al_name like '%'||#{keyword}||'%' 
+           </if>
+		  <![CDATA[
+		    WHERE rnum > ((#{pageNum}-1) * #{amount})
+		   ]]>
+	</select>
+	
+	
+
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*) 
+		FROM al_kinds k join alcohols a on k.ki_num=a.ki_num
+		                join flavors f on a.al_num=f.al_num
+		                
+		<if test="keyword != null">
+            <!-- Oracle -->
+            where a.al_name like '%'||#{keyword}||'%'       
+        </if>        
+	</select>
+
+
+       
+
+
+
+	<!-- Oracle -->
+	<!-- 검색 대상 카테고리 리스트 -->
+	<select id="getCateList" resultType="String">
+	
+		select DISTINCT cateCode from alcohols 
+		where 
+		<foreach item="type" collection="typeArr">		
+  				<choose>
+  					<when test="type == 'A'.toString()">
+  						<trim prefixOverrides="or">
+		  					<foreach collection="authorArr" item="authorId">
+		  						<trim prefix="or">
+		  							al_num = #{alNum}
+		  						</trim>
+		  					</foreach>  						
+  						</trim>
+  					</when>
+  					<when test="type == 'T'.toString()">
+  						al_name like '%' || #{keyword} || '%'
+  					</when>  					
+  				</choose>
+  		</foreach>
+	
+	</select>
+	
+	<!-- Oracle -->
+	<!-- 카테고리 정보(+검색대상 갯수) -->	
+	
+	<select id="getCateInfo" resultType="com.shop.dto.CateFilterDTO">
+	
+		select DISTINCT count(*) cateCount, a.cateCode, b.cateName from alcohols a left join categories b on a.cateCode  = b.cateCode 
+		
+		where 
+
+		<foreach item="type" collection="typeArr">		
+  				<choose>
+  					<when test="type == 'A'.toString()">
+  					
+  						<trim prefix="(" suffix=")" prefixOverrides="or">
+  						
+		  					<foreach collection="authorArr" item="authorId">
+		  					
+		  						<trim prefix="or">
+		  						
+		  							al_num = #{alNum}
+		  							
+		  						</trim>
+		  						
+		  					</foreach>
+		  					  						
+  						</trim>
+  						
+  						and a.cateCode = #{cateCode}
+  						
+  					</when>
+  					
+  					<when test="type == 'T'.toString()">
+  					
+  						al_name like '%' || #{keyword} || '%' and a.cateCode = #{cateCode}
+  						 
+  					</when>
+  					  					
+  				</choose>
+  		</foreach>
+  		
+  		group by a.cateCode, b.cateName
+	
+	</select>
+	
+	
+	
+
+	
+</mapper>
+

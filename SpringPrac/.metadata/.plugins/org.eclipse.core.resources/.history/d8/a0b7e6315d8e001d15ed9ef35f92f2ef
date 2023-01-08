@@ -1,0 +1,10 @@
+package com.shop.member.service;
+
+import org.springframework.http.ResponseEntity;
+
+import com.shop.member.dto.MemberDto;
+import com.shop.member.entity.MemberEntity;
+
+public interface MemberServiceImpl {
+	public ResponseEntity signUp(MemberDto memberDto);
+}

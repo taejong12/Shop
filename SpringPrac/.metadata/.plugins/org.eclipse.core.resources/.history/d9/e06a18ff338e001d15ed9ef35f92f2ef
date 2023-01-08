@@ -1,0 +1,89 @@
+package com.test.crud.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.test.crud.dto.BoardDto;
+import com.test.crud.service.BoardService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+
+// 자바 로직 수행
+@Controller
+@RequestMapping("/board")
+public class BoardController {
+
+	private final BoardService boardService;
+	
+	//게시물 목록
+	@GetMapping("/list")
+	public String boardList(Model model) {
+		List<BoardDto> boardList = boardService.getBoardList();
+		model.addAttribute("list", boardList);
+		return "board/list";
+	}
+	
+	// 게시물 작성 페이지
+	@GetMapping("/write")
+	public String writeBoard() {
+		return "/board/write";
+	}
+	
+	// 게시물 작성 후 저장
+	@PostMapping("/write")
+	public String writeBoard(@Valid BoardDto boardDto, BindingResult result) {
+		
+		// 유효성 검사 걸릴시
+		if(result.hasErrors()) {
+			return "/board/write";
+		}
+		
+		boardService.saveWrite(boardDto);
+		
+		return "redirect:/board/list";
+	}
+	
+	// 게시물 상세보기 페이지
+	@GetMapping(value = "/detail/{id}")
+    public String itemDetail(Model model, @PathVariable("id") Long boardId) {
+		BoardDto boardFormDto = boardService.getBoardDetail(boardId);
+		model.addAttribute("detail", boardFormDto);
+		
+        return "/board/detail";
+    }
+	
+	// 게시물 수정 페이지
+	@GetMapping("/update/{id}")
+	public String updateBoard(Model model, @PathVariable("id") Long boardId) {
+		BoardDto boardDetail = boardService.getBoardDetail(boardId);
+		model.addAttribute("update", boardDetail);
+		return "/board/update";
+	}
+	
+	// 게시물 수정 후 저장
+	@PostMapping("/update/{id}")
+	public String updateBoard(@PathVariable("id") Long boardId, BoardDto boardDto) {
+		boardService.boardUpdate(boardId, boardDto);
+		return "redirect:/board/list";
+	}
+	
+	//게시물 삭제
+	@GetMapping("/delete/{id}")
+	public String deleteBoard(@PathVariable("id") Long boardId) {
+
+		boardService.boardDelete(boardId);
+		
+		return "redirect:/board/list";
+	}
+}

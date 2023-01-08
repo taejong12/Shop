@@ -1,0 +1,29 @@
+package com.shop.dto;
+
+import java.time.LocalDateTime;
+
+import com.shop.entity.BoardEntity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+public class BoardDto {
+	private long id;
+	private String title;
+	private String writer;
+	private String content;
+	private LocalDateTime createDate;
+	private LocalDateTime modifiedDate;
+	
+	public static BoardDto toBoardDto(BoardEntity boardEntity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

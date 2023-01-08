@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.shop.dao.CartDAO">
+	<!-- 카트 추가 -->
+	<insert id="addCart">
+		insert into cart(CA_NUM, ID, AL_NUM, CA_COUNT)
+		values(ca_seq.nextval, #{id}, #{alNum}, #{caCount}) 
+	</insert>
+	
+	<!-- 카트 삭제 -->
+	<delete id="deleteCart">
+		delete from cart where CA_NUM = #{caNum}
+	</delete>
+	
+	<!-- 카트 수량 수정 -->
+	<update id="modifyCount">	
+		update cart set CA_COUNT=#{caCount} where CA_NUM = #{caNum}	
+	</update>
+	
+	
+	<!-- 카트 목록 -->
+	<select id="getCart" resultType="com.shop.dto.CartDTO">	
+		select a.CA_NUM, a.ID, a.AL_NUM, a.CA_COUNT, b.AL_NAME, b.AL_PRICE, b.AL_OPIC
+		from cart a left outer join alcohols b on a.AL_NUM = b.AL_NUM
+		where ID = #{id}	
+	</select>
+	
+	<!-- 카트 확인 -->
+	<select id="checkCart" resultType="com.shop.dto.CartDTO">
+	
+		select * from cart
+		where ID = #{id} and AL_NUM = #{alNum}
+	
+	</select>
+	
+</mapper>

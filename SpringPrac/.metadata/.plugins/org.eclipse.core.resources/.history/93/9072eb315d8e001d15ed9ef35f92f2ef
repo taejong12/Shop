@@ -1,0 +1,45 @@
+package com.shop.member.dto;
+
+import java.time.LocalDateTime;
+
+import com.shop.member.entity.BoardEntity;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+public class BoardDto {
+	private long id;
+	private String title;
+	private String writer;
+	private String content;
+	private LocalDateTime createDate;
+	private LocalDateTime modifiedDate;
+	
+	public BoardEntity toEntity() {
+		BoardEntity build = BoardEntity.builder()
+				.id(id)
+				.title(title)
+//				.writer(writer)
+				.content(content)
+				.build();
+		return build;
+	}
+	
+	@Builder
+	public BoardDto(long id, String title, String writer, String content, LocalDateTime createDate,LocalDateTime modifiedDate) {
+		this.id=id;
+		this.title=title;
+		this.writer=writer;
+		this.content=content;
+		this.createDate=createDate;
+		this.modifiedDate=modifiedDate;
+		
+	}
+}

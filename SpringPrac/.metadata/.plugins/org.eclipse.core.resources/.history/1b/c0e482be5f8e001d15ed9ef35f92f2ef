@@ -1,0 +1,30 @@
+package com.shop.service;
+
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.shop.dto.MemberDto;
+import com.shop.entity.MemberEntity;
+import com.shop.repository.MemberRepository;
+import com.shop.role.MemberRole;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class MemberService implements MemberServiceImpl {
+
+	private final MemberRepository memberRepository;
+
+	public void save(MemberDto memberDto) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

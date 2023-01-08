@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.shop.dao.AlDetailDAO">
+	<select id="detailViewDAO" resultType="com.shop.dto.AlDetailDTO">
+		SELECT A.*,B.KI_NAME,
+			   C.FL_DANMAT,C.FL_SINMAT,C.FL_SSUNMAT,C.FL_BODY,C.FL_TANSAN,
+			   D.MA_NAME, D.MA_ADDR, D.MA_LATI, D.MA_LONG, E.DE_OPIC1, E.DE_OPIC2, E.DE_OPIC3
+		FROM ALCOHOLS A 
+		JOIN AL_KINDS B
+		ON A.KI_NUM = B.KI_NUM
+		JOIN FLAVORS C
+		ON A.AL_NUM = C.AL_NUM
+		JOIN MAKERS D
+		ON A.MA_NUM = D.MA_NUM
+		JOIN DETAILVIEW E
+		ON A.AL_NUM = E.AL_NUM
+		WHERE A.AL_NUM = #{0}
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+

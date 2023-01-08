@@ -1,0 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>nav bar</title>
+</head>
+<body>
+	<a href="/">홈페이지</a>
+	<a href="">게시물 목록</a>
+	<a href=""></a>
+	<a href=""></a>
+</body>
+</html>

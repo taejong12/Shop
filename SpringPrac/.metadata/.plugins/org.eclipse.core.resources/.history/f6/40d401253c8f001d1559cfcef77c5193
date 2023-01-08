@@ -1,0 +1,92 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Member SignUp</title>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<h2>회원가입</h2>
+	<form action="/member/signUp" method="post">
+		<input type="hidden" name="memberRole" value="user"/>
+		<table border="1">
+			<tr>
+				<th>아이디</th>
+				<td><input type="text" name="memberId" id="memberId" onkeyup="memberIdCheck()"/></td>
+			</tr>
+			<tr>
+				<th>비밀번호</th>
+				<td><input type="password" name="memberPassword" id="memberPassword"/></td>
+			</tr>
+			<tr>
+				<th>비밀번호확인</th>
+				<td><input type="password" name="memberConfirmPassword" id="memberConfirmPassword"/></td>
+			</tr>
+			<tr>
+				<th>이름</th>	
+				<td><input type="text" name="memberName" id="memberName"/></td>
+			</tr>
+			<tr>
+				<th>이메일</th>	
+				<td><input type="text" name="memberEmail" id="memberEmail"/></td>
+			</tr>
+			
+		</table>
+		<input class="btn-submit" type="submit" value="회원가입"/>
+	</form>
+	<a href="/">홈페이지</a>
+	<script>
+		const memberIdCheck = () => {
+			const memberId = document.getElementById("memberId").value;
+			console.log("입력값 : ", memberId);
+			$.ajax({
+				type:"POST",
+				url:"/member/idCheck",
+				date: {
+					"memberId" : memberId 
+				},
+				success: function(res){
+					console.log("요청성공", res);
+				},
+				error: function(err) {
+					console.log("에러발생", err);
+				}
+			});
+		}	
+	/* 
+		$(function () {
+			$('.btn-submit').click((e) => {
+				const memberId = $('#memberId').val();
+				const memberPassword = $('#memberPassword').val();
+				const memberConfirmPassword = $('#memberConfirmPassword').val();
+				const memberName = $('#memberName').val();
+				const memberEmail = $('#memberEmail').val();
+				
+				if(id == '' || id == null) {
+					alert('아이디를 입력해주세요.');
+					e.preventDefault();
+				} else if(password == '' || password == null) {
+					alert('비밀번호를 입력해주세요.');
+					e.preventDefault();
+				} else if(confirmPassword == '' || confirmPassword == null) {
+					alert('비밀번호 확인을 입력해주세요.');
+					e.preventDefault();
+				} else if(name == '' || name == null) {
+					alert('이름을 입력해주세요.');
+					e.preventDefault();
+				} else if(email == '' || email == null) {
+					alert('이메일을 입력해주세요.');
+					e.preventDefault();
+				} else if(confirmPassword != password) {
+					alert('비밀번호가 일치하지 않습니다.');
+					e.preventDefault();
+				}
+			});
+		}); */
+	</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+package com.shop.service;
+
+import com.shop.dto.MemberDto;
+
+public interface MemberServiceImpl {
+	
+	public void save(MemberDto memberDto);
+	public MemberDto login(MemberDto memberDto);
+	public MemberDto memberInformationFindById(String loginId);
+	public MemberDto memberUpdateForm(String memberId);
+	public void memberUpdate(MemberDto memberDto);
+	
+}
