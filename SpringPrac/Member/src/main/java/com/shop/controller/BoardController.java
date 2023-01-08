@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,64 +31,60 @@ public class BoardController {
 
 	private final BoardServiceImpl boardService;
 	
-	//게시물 목록
+	//상품 목록
 	@GetMapping("/list")
 	public String boardList(Model model) throws Exception {
 		// DB에 저장되어 있는 모든 데이터를 가져온다
 		// 가져오니까 리턴을 받아야 하는데 한개가 아니라 여러개니까 리스트로 받는다
+		// 어떠한 html로 가져갈 데이터가 있다면 model 사용, 다른 방식도 있음 
+		// DB에서 전체 게시글 데이터를 가져와서 list.jsp에 보여준다.
 		List<BoardDto> boardDtoList = boardService.boardListFindAll();
-		// 어떠한 html로 가져갈 데이터가 있다면 model 사용, 다른 방식도 있음
-		model.addAttribute("boardList", boardDtoList);
+		model.addAttribute("boardList", boardDtoList); 
 		return "board/list";
 	}
 	
-	// 게시물 작성 페이지 이동
+	// 상품 작성 페이지 이동
 	@GetMapping("/write")
-	public String writeBoard() {
+	public String writeBoardForm() {
 		return "/board/write";
 	}
 	
-	// 게시물 작성 후 저장
+	// 상품 작성 후 저장
 	@PostMapping("/write")
-	public String writeBoard(@Valid BoardDto boardDto, BindingResult result) {
-		
-		
-		
-		
-		return "redirect:board/list";
+	public String writeBoardSave(@ModelAttribute BoardDto boardDto) throws Exception {
+		System.out.println("boardDto"+boardDto);
+		boardService.writeBoardSave(boardDto);
+		return "redirect:/board/list";
 	}
 	
-	// 게시물 상세보기 페이지
-	@GetMapping(value = "/detail/{id}")
-    public String itemDetail(Model model, @PathVariable("id") Long boardId) {
-//        BoardDto boardFormDto = boardService.getBoardDetail(boardId);
-//        model.addAttribute("detail", boardFormDto);
+	// 상품 상세보기 페이지
+	@GetMapping(value = "/detail/{boardNo}")
+    public String itemDetail(Model model, @PathVariable("boardNo") Long boardNo) throws Exception {
+		// 해당 게시글의 조회수를 하나 올리고 게시글 데이터를 가져와서 detail.jsp에 출력
+		boardService.boardUpdateHits(boardNo);
+		BoardDto boardDto = boardService.boardDetailFindById(boardNo);
+		model.addAttribute("boardDetailList", boardDto);
         return "/board/detail";
     }
 	
-	// 게시물 수정 페이지 이동
-	@GetMapping("/update/{id}")
+	// 상품 수정 페이지 이동
+	@GetMapping("/update/{boardNo}")
 	public String updateBoard() {
 		
 		return "/board/update";
 	}
 	
-	// 게시물 수정 후 저장
+	// 상품 수정 후 저장
 	@PostMapping("/update")
 	public String updateBoard(BoardDto boardDto) {
 		
 		return "redirect:/board/list";
 	}
 	
-	//게시물 삭제
-	@PostMapping("/delete/{id}")
+	// 상품 삭제
+	@PostMapping("/delete/{boardNo}")
 	public String deleteBoard(@RequestParam List<String> boardIds) {
-//		
-//		for(int i=0; i<boardIds.size(); i++) {
-//			Long id = Long.valueOf(boardIds.get(i));
-//			boardService.deleteBoard(id);
-//		}
-//		
+	
 		return "redirect:/board/list";
 	}
 }

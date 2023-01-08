@@ -1,56 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Member SignUp</title>
-<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+	integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+	crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/idCheck.js"></script>
 </head>
 <body>
 	<h2>회원가입</h2>
 	<form action="/member/signUp" method="post"
 		onsubmit="submitSignUpForm(this); return false;">
-		<input type="hidden" name="memberRole" value="user"/>
+		<input type="hidden" name="memberRole" value="user" />
 		<table border="1">
 			<tr>
 				<th>아이디</th>
-				<td>
-					<input type="text" name="memberId" id="memberId" placeholder="아이디를 입력해주세요." onkeyup="memberIdCheck()"/>
-					<span id="memberIdCheckResult"></span>
-				</td>
+				<td><input type="text" name="memberId" id="memberId"
+					placeholder="아이디를 입력해주세요." onkeyup="memberIdCheck()" /> <span
+					id="memberIdCheckResult"></span></td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
-				<td><input type="password" name="memberPassword" id="memberPassword" placeholder="비밀번호를 입력해주세요."/></td>
+				<td><input type="password" name="memberPassword"
+					id="memberPassword" placeholder="비밀번호를 입력해주세요." /></td>
 			</tr>
 			<tr>
 				<th>비밀번호확인</th>
-				<td><input type="password" name="memberConfirmPassword" id="memberConfirmPassword" placeholder="다시 한 번 입력해주세요."/></td>
+				<td><input type="password" name="memberConfirmPassword"
+					id="memberConfirmPassword" placeholder="다시 한 번 입력해주세요." /></td>
 			</tr>
 			<tr>
-				<th>이름</th>	
-				<td><input type="text" name="memberName" id="memberName" placeholder="이름을 입력해주세요."/></td>
+				<th>이름</th>
+				<td><input type="text" name="memberName" id="memberName"
+					placeholder="이름을 입력해주세요." /></td>
 			</tr>
 			<tr>
-				<th>이메일</th>	
-				<td>
-					<input type="text" name="memberEmail" id="memberEmail" placeholder="ex) test@test.com"
-					pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*" onkeyup="memberEmailCheck()"/>
-					<span id="memberEmailCheckResult"></span>
+				<th>이메일</th>
+				<td><input type="text" name="memberEmail" id="memberEmail"
+					placeholder="ex) test@test.com"
+					pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*"
+					onkeyup="memberEmailCheck()" /> <span id="memberEmailCheckResult"></span>
 				</td>
 			</tr>
-		<!-- 	<tr>
+			<!-- 	<tr>
 				<th>전화번호</th>	
 				<td><input type="tel" name="memberPhone" id="memberPhone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="010-1234-5678" required/></td>
 			</tr> -->
 		</table>
-		<input class="btn-submit" type="submit" value="회원가입"/>
+		<input class="btn-submit" type="submit" value="회원가입" />
 	</form>
 	<a href="/">홈페이지</a>
-	
+
 	<script>
 		function submitSignUpForm(form){
 			form.memberId.value = form.memberId.value.trim();
@@ -125,7 +129,7 @@
 			alert("회원가입이 완료되었습니다.");
 		}
 	</script>
-	
+
 	<script>
 		const memberIdCheck = () => {
 			const memberIdCheck = document.getElementById("memberId").value;
@@ -162,7 +166,7 @@
 		}
 	
 	</script>
-	
+
 	<script>
 		const memberEmailCheck = () => {
 			const memberEmailCheck = document.getElementById("memberEmail").value;

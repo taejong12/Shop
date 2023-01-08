@@ -1,28 +1,29 @@
 package com.shop.entity;
 
-import java.time.LocalDateTime;
-
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.shop.dto.BoardDto;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 // @Setter 엔티티에서 setter를 쓰지않고 생성자를 통해 파라미터를 설정하는게 좋다.
 // set하는 부분이 여러곳으로 퍼져서 객체의 일관성을 보장할 수 없다.(에러찾기 힘듬,유지보수 힘듬)
 // 엔티티를 변경해야 할 일이 있다면  비즈니스 메서드를 만들어서 사용한다.
 @Getter
-
+@Setter
 // jpa에서는 생성자를 만들때 파라미터가 없는 생성자를 기본적으로 만들어야 한다.
 // public, protected로 생성자 선언 가능(protected 권장)
 // @NoArgsConstructor(access = AccessLevel.PROTECTED)를 사용함으로써 protected로 선언한 생성자 부분을 생략할 수 있습니다.(롬복에서 제공)
@@ -32,63 +33,78 @@ import lombok.NoArgsConstructor;
 @Entity
 
 // 엔티티와 테이블 명을 다르게 하고 싶을 때는 @Table을 사용한다.
-@Table(name="board")
+@Table(name="SHOP_BOARD")
 @EntityListeners(AuditingEntityListener.class)
-public class BoardEntity{
+public class BoardEntity extends BaseEntity{
 
 	// @Id 어노테이션이 무조건 들어가야 하기 때문에 PK에 해당하는 컬럼에 넣어주면 된다.
 	// 게시물 고유번호
 	@Id 
-	@Column(name="board_id", nullable = false)
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@Column(name="SHOP_BOARD_ID", nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+			generator="SHOP_BOARD_SEQ_GEN" )
+	@SequenceGenerator(
+			name="SHOP_BOARD_SEQ_GEN", //시퀀스 제너레이터 이름
+			sequenceName="SHOP_BOARD_SEQ", //시퀀스 이름
+			initialValue=1, //시작값
+			allocationSize=1 //메모리를 통해 할당할 범위 사이즈
+			)
+	private Long boardNo;
+
+	// 상품이미지
+	@Column
+	private String boardImage;
+
+	// 상품명
+	@Column(nullable = false)
+	private String boardTitle;
+
+	// 상품설명
+	@Column(nullable = false)
+	private String boardContent;
+
+	// 상품가격
+	@Column(nullable = false)
+	private  int boardPrice;
+
+	// 상품재고
+	@Column(nullable = false)
+	private int boardStock;
+
+	// 상품조회수
+	@Column
+	private int boardHits;
 	
-	// 게시물 제목
-	@Column(name="board_title",nullable = false)
-	private String title;
-	
-	// 게시물 내용
-	@Column(name="board_content", nullable = false, columnDefinition = "TEXT")
-	private String content;
-	
-	// 게시물 생성 날짜
-	@Column(name="board_create_date", nullable = false)
-	private LocalDateTime createDate;
-	
-	// 게시물 수정 날짜
-	@Column(name="board_update_date", nullable = false)
-	private  LocalDateTime updateDate;
+	public static BoardEntity toWriteBoardSaveEntity(BoardDto boardDto) {
+		BoardEntity boardEntity = new BoardEntity();
+		boardEntity.setBoardImage(boardDto.getBoardImage());
+		boardEntity.setBoardTitle(boardDto.getBoardTitle());
+		boardEntity.setBoardContent(boardDto.getBoardContent());
+		boardEntity.setBoardPrice(boardDto.getBoardPrice());
+		boardEntity.setBoardStock(boardDto.getBoardStock());
+		boardEntity.setBoardHits(0);
 		
-	// 운영자 조회수
-	@Column(name="board_admin_views", nullable = false)
-	private int adminViews;
-	
-	// 일반회원 조회수
-	@Column(name="board_user_views", nullable = false)
-	private int userViews;
-	
-	// 추천수
-	@Column(name="board_likes", nullable = false)
-	private int likes;
-	
-	
+		return boardEntity;
+		
+	}
+
 	// Enum 값을 String으로 저장하고 싶을 때 사용
 	// 이 어노테이션을 붙이지 않으면 정수가 저장된다.
-//	@Enumerated(EnumType.STRING)
-//	
-//	// 다대일 관계에서 사용한다.
-//	// fetch 속성은 글로벌 페치 전략을 설정할 때 사용하는데,
-//	// 실무에서 모든 연관관계는 지연로딩 LAZY로 설정해야 한다.
-//	// @XToOne 관계는 default가 즉시 로딩(EAGER)이므로 직접 지연 로딩(LAZY)으로 설정해야 한다.
-//	// 즉시 로딩은 예측이 어렵고, 어떤 SQL이 실행될 지 추적하기 어렵고 N+1문제가 자주 발생하기 때문이다.
-//	@ManyToOne(fetch = FetchType.LAZY)
-	
+	//	@Enumerated(EnumType.STRING)
+	//	
+	//	// 다대일 관계에서 사용한다.
+	//	// fetch 속성은 글로벌 페치 전략을 설정할 때 사용하는데,
+	//	// 실무에서 모든 연관관계는 지연로딩 LAZY로 설정해야 한다.
+	//	// @XToOne 관계는 default가 즉시 로딩(EAGER)이므로 직접 지연 로딩(LAZY)으로 설정해야 한다.
+	//	// 즉시 로딩은 예측이 어렵고, 어떤 SQL이 실행될 지 추적하기 어렵고 N+1문제가 자주 발생하기 때문이다.
+	//	@ManyToOne(fetch = FetchType.LAZY)
+
 	// 아이디
 	// 외래키를 매핑할 때 사용한다.
-//	@JoinColumn(name="member_id", nullable = false)
-//	private MemberEntity memberEntity;
-		
-	
+	//	@JoinColumn(name="member_id", nullable = false)
+	//	private MemberEntity memberEntity;
+
+
 	//	SQL 사용 시 파라미터에 값을 쉽게 넣어주기 위한 어노테이션
 	//	해당 클래스의 빌더 패턴 클래스를 생성합니다.
 	//	생성자 상단에 선언 시 생성자에 포함된 필드만 빌더에 포함합니다.
@@ -99,7 +115,7 @@ public class BoardEntity{
 	//		this.writer=writer;
 	//		this.content=content;
 	//	}
-	
-	
-	
+
+
+
 }

@@ -11,17 +11,22 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
+
+// JPA에서 제공하는 메서드가 아니라 추가적인 메서드를 사용하는 경우 붙여야 한다
+// 스프링부트 JPA가 트랜잭션까지 다 관리를 하는데 수동적인 쿼리를 수행해야 하는 경우 
+// 영속성 컨텍스트 같은 부분을 데이터의 일관성을 유지하기 위해서 처리를 하는 부분
 @Transactional
 public class BoardServiceImpl implements BoardService {
 
 	private final BoardRepository boardRepository;
 
-	// 게시물 목록 호출
+	// 상품목록 호출
 	public List<BoardDto> boardListFindAll() throws Exception {
 		
 		// findAll 호출해서 List 객체 Entity가 담겨서 온다
@@ -41,6 +46,27 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		return boardDtoList;
+	}
+	
+	// 상품등록
+	public void writeBoardSave(BoardDto boardDto) throws Exception{
+		BoardEntity boardEntity = BoardEntity.toWriteBoardSaveEntity(boardDto);
+		boardRepository.save(boardEntity);
+	}
+
+	public void boardUpdateHits(Long boardNo) throws Exception {
+		boardRepository.boardUpdateHits(boardNo);	
+	}
+
+	public BoardDto boardDetailFindById(Long boardNo) throws Exception {
+		Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardNo);
+		if(optionalBoardEntity.isPresent()) {
+			BoardEntity boardEntity = optionalBoardEntity.get();
+			BoardDto boardDto = BoardDto.toBoardDto(boardEntity);
+			return boardDto;
+		} else {	
+			return null;
+		}
 	}
 	
 	

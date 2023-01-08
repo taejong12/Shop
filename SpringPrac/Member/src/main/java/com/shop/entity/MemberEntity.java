@@ -2,7 +2,7 @@ package com.shop.entity;
 
 import java.time.LocalDateTime;
 
-import javax.jdo.annotations.Column;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -10,10 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,8 +27,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
-public class MemberEntity {
+public class MemberEntity extends BaseEntity {
 
 	@Id
 	@Column
@@ -57,16 +53,8 @@ public class MemberEntity {
 	@Column
 	private String memberEmail;
 	
-	@CreatedDate
-	@Column
-	private LocalDateTime memberCreateDate;
-	
 	@Column
 	private String memberRole;
-	
-	@LastModifiedDate
-	@Column
-	private LocalDateTime memberUpdateDate;
 	
 	// 회원가입 insert
 	public static MemberEntity toMemberEntity(MemberDto memberDto) {

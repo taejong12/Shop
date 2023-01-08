@@ -38,9 +38,10 @@ public class MemberDto {
 		memberDto.setMemberPassword(memberEntity.getMemberPassword());
 		memberDto.setMemberName(memberEntity.getMemberName());
 		memberDto.setMemberEmail(memberEntity.getMemberEmail());
-		memberDto.setMemberCreateDate(memberEntity.getMemberCreateDate());
-		memberDto.setMemberCreateDate(memberEntity.getMemberUpdateDate());
 		memberDto.setMemberRole(memberEntity.getMemberRole());
+		memberDto.setMemberCreateDate(memberEntity.getCreatedTime());
+		memberDto.setMemberUpdateDate(memberEntity.getUpdatedTime());
+		
 		
 		return memberDto;
 	}
