@@ -32,9 +32,9 @@
 				<li class="nav-item">
 					<a href="/" class="nav-link" aria-current="page">홈페이지</a>
 				</li>
-				<!-- <li class="nav-item"><a href="/board/list" class="nav-link">게시물목록</a></li> -->
+				<!-- <li class="nav-item"><a href="/item/list" class="nav-link">게시물목록</a></li> -->
 				<li class="nav-item">
-					<a href="/board/paging" class="nav-link">상품목록</a>
+					<a href="/item/paging" class="nav-link">상품목록</a>
 				</li>
 
 				<%

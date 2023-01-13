@@ -1,7 +1,6 @@
 package com.shop.dto;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 
 import com.shop.entity.MemberEntity;
 

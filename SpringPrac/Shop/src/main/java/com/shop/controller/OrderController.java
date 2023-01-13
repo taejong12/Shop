@@ -14,8 +14,8 @@ public class OrderController {
 		return "/order/list";
 	}
 	
-	@GetMapping("/item/{boardNo}")
-	public String orderItem(@PathVariable("boardNo") Long boardNo) {
+	@GetMapping("/item/{itemNo}")
+	public String orderItem(@PathVariable("itemNo") Long itemNo) {
 		
 		return "/order/item";
 	}

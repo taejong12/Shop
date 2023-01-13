@@ -64,7 +64,7 @@ public class MemberServiceImpl implements MemberService {
 				return null;
 			}
 		} else {
-			// 조회 결과가 없다.(해당 이메일을 가진 회원이 없다.)
+			// 조회 결과가 없다.(해당 아이디를 가진 회원이 없다.)
 			return null;
 		}
 		
@@ -121,6 +121,7 @@ public class MemberServiceImpl implements MemberService {
 			return null;
 		}
 	}
+	
 
 	// 회원가입 이메일 중복확인
 	@Override
@@ -134,5 +135,6 @@ public class MemberServiceImpl implements MemberService {
 			return null;
 		}
 	}
+
 
 }

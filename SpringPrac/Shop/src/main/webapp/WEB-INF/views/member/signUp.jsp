@@ -12,7 +12,7 @@
 <script type="text/javascript" src="/js/idCheck.js"></script>
 
 </head>
-<body>
+<body class="text-center">
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
 	
@@ -129,7 +129,6 @@
 			}
 			
 			form.submit();
-			alert("회원가입이 완료되었습니다.");
 		}
 	</script>
 

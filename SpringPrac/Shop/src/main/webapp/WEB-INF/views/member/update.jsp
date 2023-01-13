@@ -6,12 +6,13 @@
 <meta charset="UTF-8">
 <title>Member Information Update</title>
 </head>
-<body>
+<body class="text-center">
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
 	
 	<h2>회원정보 수정하기</h2>
-	<form action="/member/update" method="post">
+	<form action="/member/update" method="post"
+		onsubmit="memberUpdateCheck(this); return false;">
 		<input type="hidden" name="memberNo" value="${memberUpdate.memberNo}" />
 		<input type="hidden" name="memberId" value="${memberUpdate.memberId}" />
 		<input type="hidden" name="memberEmail"
@@ -36,5 +37,15 @@
 		</table>
 		<input type="submit" value="수정완료" class="btn btn-primary"/>
 	</form>
+	
+	<script>
+		function memberUpdateCheck(form){
+			if(confirm("정말 수정하시겠습니까?")) {
+				form.submit();
+			} else {
+				return false;
+			}
+		}
+	</script>
 </body>
 </html>

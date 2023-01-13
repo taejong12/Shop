@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Member Imformation</title>
 </head>
-<body>
+<body class="text-center">
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
 	
@@ -34,9 +34,19 @@
 			<td>${memberInformation.memberUpdateDate}</td>
 		</tr>
 	</table>
-	<a href="/cart/list" class="btn btn-primary">장바구니 목록</a>
-	<a href="/order/list" class="btn btn-primary">주문내역 목록</a>
-	<a href="/member/update" class="btn btn-primary">수정하기</a>
-	<a href="/member/delete" class="btn btn-primary">탈퇴하기</a>
+	<a href="/cart/list/${sessionScope.memberNo}" class="btn btn-primary">장바구니 목록</a>
+	<a href="/order/list/${sessionScope.memberNo}" class="btn btn-primary">주문내역 목록</a>
+	<a href="/member/updateCheck" class="btn btn-primary">수정하기</a>
+	<a href="/member/deleteCheck" class="btn btn-primary">탈퇴하기</a>
+
+	<script type="text/javascript">
+		const redirectAlert = "${msg}";
+		if(redirectAlert == "memberUpdateSuccess"){
+			alert("회원정보가 수정되었습니다.");
+		}
+		
+		
+	</script>
+
 </body>
 </html>
