@@ -191,7 +191,6 @@
 				  itemAmount.preventDefault();
 				  };
 			
-		    
 			itemAmount.value=itemAmount.value.replace(/(^0+)[0-9]/g, "");
 			itemAmount = document.getElementById("itemAmount");
 			console.log(itemAmount.value);

@@ -20,7 +20,7 @@ public interface ItemService {
 	public ItemDto itemDetailFindById(Long itemNo) throws Exception;
 	
 	// 상품수정하기
-	public ItemDto itemUpdate(ItemDto itemDto) throws Exception;
+	public void itemUpdate(ItemDto itemDto) throws Exception;
 	
 	// 상품삭제하기
 	public void itemDelete(Long itemNo) throws Exception;

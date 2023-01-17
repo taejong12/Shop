@@ -18,8 +18,10 @@
 	<form action="/item/update" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="itemNo" value="${itemUpdate.itemNo}" />
 		<input type="hidden" name="itemHits" value="${itemUpdate.itemHits}" />
+		<input type="hidden" name="originalItemFile" value="${itemUpdate.originalItemFile}" />
+		<input type="hidden" name="storedItemFile" value="${itemUpdate.storedItemFile}" />
+		<input type="hidden" name="itemFileAttached" value="${itemUpdate.itemFileAttached}" />
 		<input type="hidden" name="itemFileNo" value="${itemUpdate.itemFileNo}" />
-		
 		
 		<table class="table table-striped table-hover">
 			<tr>

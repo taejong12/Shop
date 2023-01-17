@@ -45,22 +45,22 @@ public class ItemFileEntity extends BaseEntity{
 	// 주의할 부분 pk값이 아니라 부모 entity 값을 넘겨줘야 한다
 	public static ItemFileEntity toItemFileEntity(ItemEntity itemEntity, String originalFileName, String storedFileName) {
 		ItemFileEntity itemFileEntity = new ItemFileEntity();
+		itemFileEntity.setItemFileItemEntity(itemEntity);
 		itemFileEntity.setItemFileOriginalFileName(originalFileName);
 		itemFileEntity.setItemFileStoredFileName(storedFileName);
-		itemFileEntity.setItemFileItemEntity(itemEntity);
 		
 		return itemFileEntity;
 	}
 	
-//	public static itemFileEntity toitemFileUpdateEntity(String originalFileName, String storedFileName, itemEntity itemEntity, Long itemFileNo) {
-//		itemFileEntity itemFileEntity = new itemFileEntity();
-//		itemFileEntity.setitemFileOriginalFileName(originalFileName);
-//		itemFileEntity.setitemFileStoredFileName(storedFileName);
-//		itemFileEntity.setitemFileitemEntity(itemEntity);
-//		itemFileEntity.setitemFileNo(itemFileNo);
-//		
-//		return itemFileEntity;
-//	}
-//	
+	public static ItemFileEntity toItemFileUpdateEntity(Long itemFileNo,ItemEntity itemEntity, String originalFileName, String storedFileName) {
+		ItemFileEntity itemFileEntity = new ItemFileEntity();
+		itemFileEntity.setItemFileNo(itemFileNo);
+		itemFileEntity.setItemFileItemEntity(itemEntity);
+		itemFileEntity.setItemFileOriginalFileName(originalFileName);
+		itemFileEntity.setItemFileStoredFileName(storedFileName);
+		
+		return itemFileEntity;
+	}
+
 	
 }

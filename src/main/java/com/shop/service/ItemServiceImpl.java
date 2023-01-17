@@ -107,6 +107,7 @@ public class ItemServiceImpl implements ItemService {
 
 	// 상품 상세보기
 	public ItemDto itemDetailFindById(Long itemNo) throws Exception {
+		
 		Optional<ItemEntity> optionalItemEntity = itemRepository.findById(itemNo);
 		if(optionalItemEntity.isPresent()) {
 			ItemEntity itemEntity = optionalItemEntity.get();
@@ -120,79 +121,79 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	// 상품 수정하기
-	public ItemDto itemUpdate(ItemDto itemDto) throws Exception {
-		ItemEntity itemEntity = ItemEntity.toUpdateEntity(itemDto);
-		//System.out.println("itemUpdate ==:"+itemEntity);
-		itemRepository.save(itemEntity);
-		return itemDetailFindById(itemDto.getItemNo());
+	public void itemUpdate(ItemDto itemDto) throws Exception {
 		
-//		// 파일 첨부 여부에 따라 로직 분리
-//		if(itemDto.getitemFile().isEmpty()) {
-//			// 첨부 파일 없음.
-//			itemEntity itemEntity = itemEntity.toUpdateEntity(itemDto);
-//			System.out.println("itemUpdate ==:"+itemEntity);
-//			itemRepository.save(itemEntity);
-//			return itemDetailFindById(itemDto.getitemNo());
-//		} else {
-//			// 첨부 파일 있음.
-//			// 1. Dto에 담긴 파일을 꺼냄.
-//			// 2. 파일의 이름 가져옴
-//			// 3. 서버 저장용 이름을 만듬(하나 추가)
-//			// 내 사진.jpg => 48946954564_내사진.jpg
-//			// 4. 저장 경로 설정
-//			// 5. 해당 경로에 파일 저장
-//			// 6. item_table에 해당 데이터 save 처리
-//			// 7. item_file_table에 해당 데이터 save 처리
-//			
-			// 기존에 있던 파일을 삭제 후 업데이트 (디비에 저장된 이름과 폴더에 저장된 이름 비교 삭제?)
+		if(itemDto.getItemFile().isEmpty()) {
 			
-		
-//			MultipartFile itemFile = itemDto.getitemFile();
-//			String originalFilename = itemFile.getOriginalFilename();
-//			System.out.println("originalFilename : "+originalFilename);
-//			String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
-//			System.out.println("storedFileName : "+storedFileName);
-//			String savePath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + storedFileName; // 저장경로 반드시 있어야 한다. 저장까지 셋팅
-//			itemFile.transferTo(new File(savePath)); // 스프링멀티파트파일에서 제공하는 메서드, 지정한 경로로 파일을 넘긴다, 예외처리해줘야한다(서블릿쪽으로 떠넘기기) 
-//			// 여기까지 파일 저장만 처리
+			// 첨부 파일 없음.
+			// item 내용만 업데이트
+			ItemEntity itemEntity = ItemEntity.toUpdateEntity(itemDto);
+			itemRepository.save(itemEntity);
+			
+		} else {
+			
+			// 기존에 있던 파일을 삭제 후 업데이트
+			
+			// 저장된 파일 삭제
+			String savedPath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + itemDto.getStoredItemFile();
+			File deleteFile = new File(savedPath);
+			
+			if(deleteFile.exists()) {
+				deleteFile.delete();
+			}
+			
+			// 새로 올린 파일 불러오기
+			MultipartFile itemFile = itemDto.getItemFile();
+			
+			// 올린 이름 가져오기
+			String originalFilename = itemFile.getOriginalFilename();
+			
+			// 우리쪽에 저장될 이름 새로 생성
+			String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
+			
+			// 이미지 파일 저장경로 설정
+			String savePath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + storedFileName; // 저장경로 반드시 있어야 한다. 저장까지 셋팅
+			
+			// 이미지 파일 저장경로에 저장
+			itemFile.transferTo(new File(savePath)); // 스프링멀티파트파일에서 제공하는 메서드, 지정한 경로로 파일을 넘긴다, 예외처리해줘야한다(서블릿쪽으로 떠넘기기) 
+			// 여기까지 파일 저장만 처리
+			
+			// DB에 저장하는 내용
+			ItemEntity itemEntity = ItemEntity.toUpdateEntity(itemDto);
 
-			// 여기서부터 문제
-			// SHOP_item 와 SHOP_item_FILE을 입력받은 값으로 UPDATE 해줘야 한다
+			// 저장되기 전이라 아직 itemNo 값이 없다
+			Long savedId = itemRepository.save(itemEntity).getItemNo(); // 부모자식 관계이기 때문에 item_no로 불러온다
+
+			// DB에서 itemNo 값 가져옴
+			ItemEntity item = itemRepository.findById(savedId).get(); // 부모 entity를 가져왔다, 전달이 돼야 한다
+
+			// itemFileEntity로 변환해주는 작업
+			ItemFileEntity itemFileEntity = ItemFileEntity.toItemFileUpdateEntity(itemDto.getItemFileNo(), item, originalFilename, storedFileName);
 			
+			// 이미지 파일 업데이트
+			itemFileRepository.save(itemFileEntity); // DB에 저장까지만 한 내용
 			
-//			// DB에 저장하는 내용
-//			itemEntity itemEntity = itemEntity.toUpdateEntity(itemDto);
-//			
-//			// 저장되기 전이라 아직 itemNo 값이 없다
-//			Long savedId = itemRepository.save(itemEntity).getitemNo(); // 부모자식 관계이기 때문에 item_no로 불러온다
-//			System.out.println("savedId :"+savedId);
-//			
-//			// DB에서 itemNo 값 가져옴
-//			itemEntity item = itemRepository.findById(savedId).get(); // 부모 entity를 가져왔다, 전달이 돼야 한다
-//			System.out.println("item :"+item);
-//			
-////			itemFileEntity itemFile1 = itemFileRepository.findByitemNo(itemEntity.getitemNo());
-////			System.out.println("itemFile ==:"+itemFile1);
-//			
-////			itemFileEntity itemFileEntity = itemFileEntity.toUpdateFileEntity(itemDto);
-////			
-////			itemFileEntity no = itemFileRepository.findByitemNo(); 
-//			
-//			Long itemFileNo = itemDto.getitemFileNo();
-//			System.out.println("itemFileNo :"+itemFileNo);
-//			
-//			// itemFileEntity로 변환해주는 작업
-//			itemFileEntity itemFileEntity = itemFileEntity.toitemFileUpdateEntity(originalFilename, storedFileName, item, itemFileNo);
-//			System.out.println("itemFileEntity : "+itemFileEntity.getitemFileStoredFileName());
-//			itemFileRepository.save(itemFileEntity); // DB에 저장까지만 한 내용
-//			
-//			System.out.println("getitemNo : " + itemDto.getitemNo());
-//			return itemDetailFindById(itemDto.getitemNo());
-//		}
+		}
+				
 	}
 
 	// 상품 삭제하기
 	public void itemDelete(Long itemNo) throws Exception {
+		
+		/*
+		 * Optional<ItemEntity> optionalItemEntity = itemRepository.findById(itemNo);
+		 * 
+		 * ItemEntity itemEntity = optionalItemEntity.get();
+		 * 
+		 * ItemDto itemDto = ItemDto.toItemDto(itemEntity);
+		 * 
+		 * // 파일 삭제 String savedPath =
+		 * "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" +
+		 * itemDto.getStoredItemFile(); File deleteFile = new File(savedPath);
+		 * 
+		 * if(deleteFile.exists()) { deleteFile.delete(); }
+		 */
+		
 		itemRepository.deleteById(itemNo);
 
 	}
@@ -214,10 +215,13 @@ public class ItemServiceImpl implements ItemService {
 		System.out.println("itemEntities.isFirst() =" + itemEntities.isFirst()); // 첫 페이지 여부
 		System.out.println("itemEntities.isLast() =" + itemEntities.isLast()); // 마지막 페이지 여부
 
+	
 		// 페이지 객체 변환
-		Page<ItemDto> itemDtos = itemEntities.map(item -> new ItemDto(item.getItemNo(), item.getItemTitle(), item.getItemPrice(), item.getItemStock(), item.getItemHits(), item.getCreatedTime(), item.getItemFileEntityList().getItemFileStoredFileName(), item.getItemFileAttached()));
-
+		Page<ItemDto> itemDtos = itemEntities.map(item -> new ItemDto(item.getItemNo(), item.getItemTitle(),
+				item.getItemPrice(), item.getItemStock(), item.getItemHits(), item.getCreatedTime(),
+				item.getItemFileEntityList().getItemFileStoredFileName(), item.getItemFileAttached()));
 		return itemDtos;
+		
 	}
 
 

@@ -105,10 +105,9 @@ public class ItemController {
 			
 		}
 		
-		
 		ItemDto itemDto = itemService.itemDetailFindById(itemNo);
 		model.addAttribute("itemDetailList", itemDto);
-		//System.out.println("itemDetailList =====:" + itemDto);
+		
         return "/item/detail";
     }
 	
@@ -117,14 +116,14 @@ public class ItemController {
 	public String updateitem(@PathVariable("itemNo") Long itemNo, Model model) throws Exception {
 		ItemDto itemDto = itemService.itemDetailFindById(itemNo);
 		model.addAttribute("itemUpdate", itemDto);
-		//System.out.println("itemUpdate : "+ itemDto);
+		
 		return "/item/update";
 	}
 	
 	// 상품 수정 후 저장
 	@PostMapping("/update")
-	public String updateitem(@ModelAttribute ItemDto itemDto, Model model, RedirectAttributes ra) throws Exception {
-		//System.out.println("itemDto : "+ itemDto);
+	public String updateitem(@ModelAttribute ItemDto itemDto, RedirectAttributes ra) throws Exception {
+		
 		itemService.itemUpdate(itemDto);
 		
 		// 상품 수정 메시지

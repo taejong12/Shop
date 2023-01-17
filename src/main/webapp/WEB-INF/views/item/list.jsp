@@ -25,7 +25,7 @@
 		</tr>
 		<c:forEach items="${itemList}" var="itemList">
 			<tr>
-				<td><img src="/upload/${itemList.storeditemFile}" alt="이미지"></td>
+				<td><img src="/upload/${itemList.storedItemFile}" alt="이미지"></td>
 				<td><a href="/item/detail/${itemList.itemNo}">${itemList.itemTitle}</a></td>
 				<td>${itemList.itemPrice}원</td>
 				<td>${itemList.itemStock}개</td>

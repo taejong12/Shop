@@ -25,6 +25,7 @@ import lombok.Setter;
 @Setter
 @Table(name="SHOP_CART")
 public class CartEntity extends BaseEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,
 	generator="SHOP_CART_SEQ_GEN" )

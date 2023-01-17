@@ -47,7 +47,6 @@
 
 	<script type="text/javascript">
 		function itemWriterForm(form){
-			
 			form.itemTitle.value = form.itemTitle.value.trim();
 			if(form.itemTitle.value.length==0){
 				alert('상품명을 입력해주세요.');

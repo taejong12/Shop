@@ -81,7 +81,7 @@ public class ItemEntity extends BaseEntity{
 	private int itemFileAttached; // 1 or 0
 	
 	// 이미지 파일
-	@OneToOne(mappedBy = "itemFileItemEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "itemFileItemEntity", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private ItemFileEntity itemFileEntityList ;
 	
 	// 장바구니
@@ -111,7 +111,7 @@ public class ItemEntity extends BaseEntity{
 		itemEntity.setItemPrice(itemDto.getItemPrice());
 		itemEntity.setItemStock(itemDto.getItemStock());
 		itemEntity.setItemHits(itemDto.getItemHits());
-		
+		itemEntity.setItemFileAttached(1); // 파일 있음.
 //		if(itemDto.getitemFile().isEmpty()) {
 //			itemEntity.setitemFileAttached(0);
 //		} else {

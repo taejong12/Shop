@@ -37,7 +37,10 @@ public class ItemDto {
 	// 상품목록
 	public static ItemDto toItemDto(ItemEntity itemEntity) {
 		ItemDto itemDto = new ItemDto();
-		//itemDto.setitemFileNo(itemEntity.getitemFileEntityList().getitemFileNo());
+		if(itemEntity.getItemFileEntityList() != null) {
+			itemDto.setItemFileNo(itemEntity.getItemFileEntityList().getItemFileNo());
+		}
+		
 		itemDto.setItemNo(itemEntity.getItemNo());
 		itemDto.setItemTitle(itemEntity.getItemTitle());
 		itemDto.setItemContent(itemEntity.getItemContent());
@@ -46,6 +49,7 @@ public class ItemDto {
 		itemDto.setItemHits(itemEntity.getItemHits());
 		itemDto.setItemCreateDate(itemEntity.getCreatedTime());
 		itemDto.setItemUpdateDate(itemEntity.getUpdatedTime());
+		
 		if(itemEntity.getItemFileAttached()==0) { // 이미지 없으면 생략
 			itemDto.setItemFileAttached(itemEntity.getItemFileAttached()); // 0
 		} else {
@@ -72,6 +76,18 @@ public class ItemDto {
 		this.itemCreateDate = itemCreateDate; 
 		this.storedItemFile = storedItemFile;
 		this.itemFileAttached=itemFileAttached;
+	}
+
+	public ItemDto(Long itemNo, String itemTitle, int itemPrice, int itemStock, int itemHits, Date itemCreateDate,
+			int itemFileAttached) {
+		super();
+		this.itemNo = itemNo;
+		this.itemTitle = itemTitle;
+		this.itemPrice = itemPrice;
+		this.itemStock = itemStock;
+		this.itemHits = itemHits;
+		this.itemCreateDate = itemCreateDate;
+		this.itemFileAttached = itemFileAttached;
 	}
 	
 	
