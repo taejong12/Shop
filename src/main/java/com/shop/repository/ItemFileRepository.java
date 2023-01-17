@@ -6,6 +6,5 @@ import com.shop.entity.ItemFileEntity;
 
 public interface ItemFileRepository extends JpaRepository<ItemFileEntity, Long>{
 
-//	itemFileEntity findByitemNo(Long itemNo);
 
 }

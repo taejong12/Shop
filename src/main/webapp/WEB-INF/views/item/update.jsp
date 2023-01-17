@@ -64,7 +64,14 @@
 			</tr>
 			<tr>
 				<th>상품수정일</th>
-				<td>${itemUpdate.itemUpdateDate}</td>
+				<c:choose>
+					<c:when test="${itemUpdate.itemUpdateDate} != null">
+						<td>${itemUpdate.itemUpdateDate}</td>
+					</c:when>
+					<c:otherwise>
+						<td>${itemUpdate.itemFileUpdateDate}</td>
+					</c:otherwise>
+				</c:choose>
 			</tr>
 		</table>
 		<input type="submit" value="수정하기" class="btn btn-primary"/>

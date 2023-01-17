@@ -111,9 +111,7 @@ public class ItemServiceImpl implements ItemService {
 		Optional<ItemEntity> optionalItemEntity = itemRepository.findById(itemNo);
 		if(optionalItemEntity.isPresent()) {
 			ItemEntity itemEntity = optionalItemEntity.get();
-			//System.out.println("optionalitemEntity : "+ itemEntity.getitemFileEntityList().getitemFileNo());
 			ItemDto itemDto = ItemDto.toItemDto(itemEntity);
-			//System.out.println("itemDetailFindById : "+ itemDto.getitemFileNo());
 			return itemDto;
 		} else {	
 			return null;
@@ -180,20 +178,24 @@ public class ItemServiceImpl implements ItemService {
 	// 상품 삭제하기
 	public void itemDelete(Long itemNo) throws Exception {
 		
-		/*
-		 * Optional<ItemEntity> optionalItemEntity = itemRepository.findById(itemNo);
-		 * 
-		 * ItemEntity itemEntity = optionalItemEntity.get();
-		 * 
-		 * ItemDto itemDto = ItemDto.toItemDto(itemEntity);
-		 * 
-		 * // 파일 삭제 String savedPath =
-		 * "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" +
-		 * itemDto.getStoredItemFile(); File deleteFile = new File(savedPath);
-		 * 
-		 * if(deleteFile.exists()) { deleteFile.delete(); }
-		 */
+		Optional<ItemEntity> optionalItemEntity = itemRepository.findById(itemNo);
+  
+		ItemEntity itemEntity = optionalItemEntity.get();
+  
+		ItemDto itemDto = ItemDto.toItemDto(itemEntity);
+		  
+		// 저장된 파일 삭제
+		String savedPath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + itemDto.getStoredItemFile();
+		File deleteFile = new File(savedPath);
 		
+		if(deleteFile.exists()) {
+			deleteFile.delete();
+		}
+
+		// 자식 먼저 삭제
+		itemFileRepository.deleteById(itemDto.getItemFileNo());
+		
+		// 파일 있어서 먼저 삭제하면 에러뜸(자식 먼저 삭제해야 함)
 		itemRepository.deleteById(itemNo);
 
 	}

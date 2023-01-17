@@ -112,11 +112,6 @@ public class ItemEntity extends BaseEntity{
 		itemEntity.setItemStock(itemDto.getItemStock());
 		itemEntity.setItemHits(itemDto.getItemHits());
 		itemEntity.setItemFileAttached(1); // 파일 있음.
-//		if(itemDto.getitemFile().isEmpty()) {
-//			itemEntity.setitemFileAttached(0);
-//		} else {
-//			itemEntity.setitemFileAttached(1);
-//		}
 		
 		return itemEntity;
 	}

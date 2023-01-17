@@ -27,6 +27,8 @@ public class ItemDto {
 	private int itemHits; // 상품조회수
 	private Date itemCreateDate; // 상품등록일
 	private Date itemUpdateDate; // 상품수정일
+	private Date itemFileUpdateDate; // 상품수정일
+	
 	
 	private Long itemFileNo; // 파일넘버
 	private MultipartFile itemFile; // jsp -> controller 파일 담는 용도
@@ -49,6 +51,8 @@ public class ItemDto {
 		itemDto.setItemHits(itemEntity.getItemHits());
 		itemDto.setItemCreateDate(itemEntity.getCreatedTime());
 		itemDto.setItemUpdateDate(itemEntity.getUpdatedTime());
+		itemDto.setItemFileUpdateDate(itemEntity.getItemFileEntityList().getUpdatedTime());
+		
 		
 		if(itemEntity.getItemFileAttached()==0) { // 이미지 없으면 생략
 			itemDto.setItemFileAttached(itemEntity.getItemFileAttached()); // 0
@@ -78,18 +82,5 @@ public class ItemDto {
 		this.itemFileAttached=itemFileAttached;
 	}
 
-	public ItemDto(Long itemNo, String itemTitle, int itemPrice, int itemStock, int itemHits, Date itemCreateDate,
-			int itemFileAttached) {
-		super();
-		this.itemNo = itemNo;
-		this.itemTitle = itemTitle;
-		this.itemPrice = itemPrice;
-		this.itemStock = itemStock;
-		this.itemHits = itemHits;
-		this.itemCreateDate = itemCreateDate;
-		this.itemFileAttached = itemFileAttached;
-	}
-	
-	
 	
 }
