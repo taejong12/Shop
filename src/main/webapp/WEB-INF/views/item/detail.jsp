@@ -93,9 +93,10 @@
 		</c:otherwise>
 	</c:choose>
 	<!-- 로그인시 그 전에 보던 페이지로 이동(할일) -->
-
 	
 	<script type="text/javascript">
+	
+		// 삭제 버튼 클릭시
 		function itmeDeleteCheck(){
 			if(confirm("정말 삭제하시겠습니까?")){				
 				location.href='/item/delete/${itemDetailList.itemNo}';
@@ -104,7 +105,7 @@
 			}
 		}
 		
-		
+		// 장바구니 버튼 클릭시
 		function cartItemCheck(){
 			
 			if(document.getElementById("itemAmount").value <= 0){
@@ -113,42 +114,79 @@
 			}
 			
 			const itemAmountValue = document.getElementById("itemAmount").value;
-			console.log("itemAmountValue : "+itemAmountValue);
-			const cartData ={
-					"memberNo" : ${sessionScope.memberNo},
-					"itemNo" : ${itemDetailList.itemNo},
-					"cartItemAmount" : itemAmountValue
+			
+			const cartCheck ={
+				"memberNo" : ${sessionScope.memberNo},
+				"itemNo" : ${itemDetailList.itemNo}
 			}
 			
-			console.log("cartItemAmount : "+cartData.itemAmount);
-			
+			// 장바구니 중복 체크
 			$.ajax({
 				type:"post",
-				url:"/cart/item",
-				data: cartData,
+				url:"/cart/check",
+				data:cartCheck,
 				success:function(data){
-					console.log(data);
-					
-					if(confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?")){			
-						location.href='/cart/list/${sessionScope.memberNo}';
-					}  else {
-						return false;
+					console.log("data : "+data);
+					console.log("cartNo : "+data.cartNo);
+					console.log("itemNo : "+data.itemNo);
+				
+					const itemNo = "${itemDetailList.itemNo}";
+					const memberNo = "${sessionScope.memberNo}";
+					console.log("itemNo : "+itemNo);
+						
+					// 데이터 받아와서 멤버 넘버랑 상품 넘버 비교해서 장바구니 중복 확인하기
+					if(data.itemNo == itemNo && data.memberNo == memberNo){
+						if(confirm("이미 장바구니에 있습니다. 장바구니로 이동하시겠습니까?")){
+							location.href='/cart/list/${sessionScope.memberNo}';
+							return false;
+						}  else {
+							return false;
+						}
 					}
-				
+					
+					const cartData ={
+							"memberNo" : ${sessionScope.memberNo},
+							"itemNo" : ${itemDetailList.itemNo},
+							"cartItemAmount" : itemAmountValue
+						}
+					
+					// 장바구니 추가
+					$.ajax({
+						type:"post",
+						url:"/cart/item",
+						data: cartData,
+						success:function(data){
+							console.log("data : "+data);
+							console.log("cartNo : "+data.cartNo);
+							console.log("itemNo : "+data.itemNo);
+
+							if(confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?")){
+								location.href='/cart/list/${sessionScope.memberNo}';
+								return false;
+							}  else {
+								return false;
+							}
+						
+						},
+						error : function(){
+							alert("장바구니 추가 ajax 실행 실패");
+						}
+						
+					})		
+					
 				},
-				error : function(){
-					alert("장바구니 추가 ajax 실행 실패");
+				error:function(){
+					alert("장바구니 중복확인 ajax 실행 실패");
 				}
-				
 			})
-			
-			
+				
 		}
 	
 		const redirectAlert = "${msg}";
 		if(redirectAlert == "itemUpdateSuccess"){
 			alert("상품이 수정되었습니다.");
 		}
+		
 	</script>
 	
 	<script type="text/javascript">
@@ -160,13 +198,14 @@
 		function itemAdd(){
 			itemAmount = document.getElementById("itemAmount");
 			itemAmount.value ++ ;
-			console.log(itemAmount.value);
+			
 			itemPrice = "${itemDetailList.itemPrice}";
 			itemPriceSum = parseInt(itemAmount.value) * itemPrice;
-			console.log(itemPriceSum);
+			
 			if(isNaN(itemPriceSum)){
 				itemPriceSum=0;
 			}
+			
 			document.getElementById('itmePriceSum').innerHTML=itemPriceSum;
 			
 		}
@@ -174,12 +213,15 @@
 		function itemDel(){
 			itemAmount = document.getElementById("itemAmount");
 			itemPrice = "${itemDetailList.itemPrice}";
+			
 			if(itemAmount.value > 0) {
 				itemAmount.value -- ;
 				itemPriceSum = parseInt(itemAmount.value) * itemPrice;
+				
 				if(isNaN(itemPriceSum)){
 					itemPriceSum=0;
-				} 
+				}
+				
 				document.getElementById('itmePriceSum').innerHTML=itemPriceSum;
 				
 			}
@@ -187,26 +229,25 @@
 		
 		function itemAmountChange(itemAmount){
 			
-			  if (itemAmount.keyCode === 13) {
-				  itemAmount.preventDefault();
-				  };
+			itemAmount.value=itemAmount.value.replace(/(^0+)/g, "").trim();
+			itemAmount.value=itemAmount.value.replace(/[^0-9]/g, "").trim();
 			
-			itemAmount.value=itemAmount.value.replace(/(^0+)[0-9]/g, "");
 			itemAmount = document.getElementById("itemAmount");
-			console.log(itemAmount.value);
 			itemPrice = "${itemDetailList.itemPrice}";
+			
 			if(itemAmount.value<0){
 				itemAmount.value=0;
 			}
+			
 			itemPriceSum = parseInt(itemAmount.value) * itemPrice;
-			console.log(itemPriceSum);
+			
 			if(isNaN(itemPriceSum)){
 				itemPriceSum=0;
-			} 
+			}
+			
 			document.getElementById('itmePriceSum').innerHTML=itemPriceSum;
 		}
-		
-		
+	
 	</script>
 </body>
 </html>

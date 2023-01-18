@@ -1,6 +1,9 @@
 package com.shop.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -40,7 +42,6 @@ import lombok.Setter;
 
 // 엔티티와 테이블 명을 다르게 하고 싶을 때는 @Table을 사용한다.
 @Table(name="SHOP_ITEM")
-@EntityListeners(AuditingEntityListener.class)
 public class ItemEntity extends BaseEntity{
 
 	// @Id 어노테이션이 무조건 들어가야 하기 때문에 PK에 해당하는 컬럼에 넣어주면 된다.
@@ -84,10 +85,9 @@ public class ItemEntity extends BaseEntity{
 	@OneToOne(mappedBy = "itemFileItemEntity", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private ItemFileEntity itemFileEntityList ;
 	
-	// 장바구니
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="cart_no")
-	private CartEntity cartEntity;
+	// 장바구니 조인
+	@OneToMany(mappedBy = "itemEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<CartEntity> cartEntityList = new ArrayList<>();
 	
 	
 	

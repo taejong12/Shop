@@ -39,25 +39,29 @@ public class MemberEntity extends BaseEntity {
             )
 	private Long memberNo;
 	
+	// 회원아이디
 	@Column(nullable=false)
 	private String memberId;
 	
+	// 회원비밀번호
 	@Column(nullable=false)
 	private String memberPassword;
 	
+	// 회원이름
 	@Column(nullable=false)
 	private String memberName;
 	
+	// 회원이메일
 	@Column(nullable=false)
 	private String memberEmail;
 	
+	// 회원
 	@Column(nullable=false)
 	private String memberRole;
 	
 	// 장바구니 조인
 	@OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<CartEntity> cartEntityList = new ArrayList<>();
-	
 	
 	// 회원가입 insert
 	public static MemberEntity toMemberEntity(MemberDto memberDto) {

@@ -1,9 +1,5 @@
 package com.shop.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,19 +7,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.shop.dto.CartDto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @Table(name="SHOP_CART")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartEntity extends BaseEntity {
 	
 	@Id
@@ -43,13 +41,16 @@ public class CartEntity extends BaseEntity {
 	private MemberEntity memberEntity ;
 	
 	// 상품 조인
-	@OneToMany(mappedBy = "cartEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<ItemEntity> itemEntityList = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="item_no")
+	private ItemEntity itemEntity;
 	
 	private int cartItemAmount;
 
-	public static CartEntity toCartSaveEntity(CartDto cartDto) {
+	public static CartEntity toCartSaveEntity(MemberEntity memberEntity, ItemEntity itemEntity, CartDto cartDto) {
 		CartEntity cartEntity = new CartEntity();
+		cartEntity.setMemberEntity(memberEntity);
+		cartEntity.setItemEntity(itemEntity);
 		cartEntity.setCartItemAmount(cartDto.getCartItemAmount());
 		return cartEntity;
 	}

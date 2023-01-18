@@ -11,13 +11,16 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name="SHOP_ITEM_FILE")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ItemFileEntity extends BaseEntity{
 
 	@Id

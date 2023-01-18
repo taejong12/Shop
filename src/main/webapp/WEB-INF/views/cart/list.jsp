@@ -27,18 +27,20 @@
 			<th>상품가격</th>
 			<th>선택한갯수</th>
 			<th>상품총가격</th>
+			<th>삭제</th>
 			
 		</tr>
-		<%-- <c:forEach items="${itemList.content}" var="itemList">
+		<c:forEach items="${cartList.content}" var="cartList">
 			<tr>
-				<td><img src="/upload/${itemList.storedItemFile}" alt="이미지"
+				<td><img src="/upload/${cartList.storedItemFile}" alt="이미지"
 					style="width: 100px; height: 100px;"></td>
-				<td><a href="/item/detail/${itemList.itemNo}">${itemList.itemTitle}</a></td>
-				<td>${itemList.itemPrice}원</td>
-				<td>${itemList.itemStock}개</td>
-				<td>${itemList.itemCreateDate}원</td>
+				<td><a href="/item/detail/${cartList.itemNo}">${cartList.itemTitle}</a></td>
+				<td>${cartList.itemPrice}원</td>
+				<td>${cartList.cartItemAmount}개</td>
+				<td>${cartList.itemPrice * cartList.cartItemAmount}원</td>
+				<td><button type="button">삭제</button></td>
 			</tr>
-		</c:forEach> --%>
+		</c:forEach>
 	</table>
 
 	<!-- 페이징 영역 시작 -->
@@ -47,37 +49,37 @@
 
 			<!-- 이전 -->
 			<c:choose>
-				<c:when test="${itemList.first}"></c:when>
+				<c:when test="${cartList.first}"></c:when>
 				<c:otherwise>
 					<li class="page-item"><a class="page-link"
-						href="/item/paging?page=1&searchText=${param.searchText}">처음</a></li>
+						href="/cart/list/${sessionScope.memberNo}?page=1&searchText=${param.searchText}">처음</a></li>
 					<li class="page-item"><a class="page-link"
-						href="/item/paging?page=${itemList.number}&searchText=${param.searchText}">&larr;</a></li>
+						href="/cart/list/${sessionScope.memberNo}?page=${cartList.number}&searchText=${param.searchText}">&larr;</a></li>
 				</c:otherwise>
 			</c:choose>
 
 			<!-- 페이지 그룹 -->
 			<c:forEach begin="${startPage}" end="${endPage}" var="i">
 				<c:choose>
-					<c:when test="${itemList.pageable.pageNumber+1==i}">
+					<c:when test="${cartList.pageable.pageNumber+1==i}">
 						<li class="page-item disabled"><a class="page-link"
-							href="/item/paging?page=${i}&searchText=${param.searchText}">${i}</a></li>
+							href="/cart/list/${sessionScope.memberNo}?page=${i}&searchText=${param.searchText}">${i}</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link"
-							href="/item/paging?page=${i}&searchText=${param.searchText}">${i}</a></li>
+							href="/cart/list/${sessionScope.memberNo}?page=${i}&searchText=${param.searchText}">${i}</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 
 			<!-- 다음 -->
 			<c:choose>
-				<c:when test="${itemList.last}"></c:when>
+				<c:when test="${cartList.last}"></c:when>
 				<c:otherwise>
 					<li class="page-item"><a class="page-link"
-						href="/item/paging?page=${itemList.number+2}&searchText=${param.searchText}">&rarr;</a></li>
+						href="/cart/list/${sessionScope.memberNo}?page=${cartList.number+2}&searchText=${param.searchText}">&rarr;</a></li>
 					<li class="page-item"><a class="page-link"
-						href="/item/paging?page=${itemList.totalPages}&searchText=${param.searchText}">마지막</a></li>
+						href="/cart/list/${sessionScope.memberNo}?page=${cartList.totalPages}&searchText=${param.searchText}">마지막</a></li>
 				</c:otherwise>
 			</c:choose>
 		</ul>
@@ -96,7 +98,7 @@
 		if(redirectAlert == "itemDeleteSuccess"){
 			alert("상품이 삭제되었습니다.");
 		}
-		
+
 	</script>
 
 

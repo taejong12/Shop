@@ -133,7 +133,7 @@ public class ItemController {
 	
 	// 상품 삭제
 	@GetMapping("/delete/{itemNo}")
-	public String deleteitem(@PathVariable Long itemNo, RedirectAttributes ra) throws Exception {
+	public String deleteitem(@PathVariable("itemNo") Long itemNo, RedirectAttributes ra) throws Exception {
 		itemService.itemDelete(itemNo);
 		
 		// 상품 삭제 메시지

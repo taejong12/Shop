@@ -2,6 +2,10 @@ package com.shop.dto;
 
 import java.sql.Date;
 
+import com.shop.entity.CartEntity;
+import com.shop.entity.ItemEntity;
+import com.shop.entity.MemberEntity;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,10 +27,25 @@ public class CartDto {
 	private Date cartItemCreateDate; // 장바구니 상품등록일
 	private Date cartItemUpdateDate; // 장바구니 상품수정일
 	
+	public static CartDto toCartDto(CartEntity cartEntity) {
+		CartDto cartDto = new CartDto();
+		// Entity를 Dto로 변환하는 작업
+		cartDto.setCartNo(cartEntity.getCartNo());
+		cartDto.setMemberNo(cartEntity.getMemberEntity().getMemberNo());
+		cartDto.setItemNo(cartEntity.getItemEntity().getItemNo());
+		cartDto.setStoredItemFile(cartEntity.getItemEntity().getItemFileEntityList().getItemFileStoredFileName());
+		cartDto.setItemTitle(cartEntity.getItemEntity().getItemTitle());
+		cartDto.setItemPrice(cartEntity.getItemEntity().getItemPrice());
+		cartDto.setCartItemAmount(cartEntity.getCartItemAmount());
+		cartDto.setCartItemCreateDate(cartEntity.getCreatedTime());
+		cartDto.setCartItemUpdateDate(cartEntity.getUpdatedTime());
+
+		return cartDto;
+	}
+	
 	// 페이징 장바구니 목록
 	public CartDto(Long cartNo, Long memberNo, Long itemNo, String storedItemFile, String itemTitle, int itemPrice,
 			int cartItemAmount, Date cartItemCreateDate, Date cartItemUpdateDate) {
-		super();
 		this.cartNo = cartNo;
 		this.memberNo = memberNo;
 		this.itemNo = itemNo;
@@ -36,6 +55,18 @@ public class CartDto {
 		this.cartItemAmount = cartItemAmount;
 		this.cartItemCreateDate = cartItemCreateDate;
 		this.cartItemUpdateDate = cartItemUpdateDate;
+	}
+
+	// 장바구니 확인
+	public static CartDto toCartCheck(CartEntity cartEntity) {
+		CartDto cartDto = new CartDto();
+		
+		if(cartEntity != null) {
+			cartDto.setMemberNo(cartEntity.getMemberEntity().getMemberNo());
+			cartDto.setItemNo(cartEntity.getItemEntity().getItemNo());
+		}
+		
+		return cartDto;
 	}
 	
 	
