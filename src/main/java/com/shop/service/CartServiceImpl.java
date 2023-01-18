@@ -111,8 +111,9 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public void cartDelete(Long cartNo) throws Exception {
-		cartRepository.deleteById(cartNo);
+	public void cartDelete(Long cartNo, Long memberNo) throws Exception {
+		Optional<MemberEntity> memberEntity = memberRepository.findById(memberNo);
+		cartRepository.deleteByIdAndMemberEntity(cartNo, memberEntity.get());
 		
 	}
 

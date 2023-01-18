@@ -68,8 +68,8 @@ public class CartController {
 	// 장바구니 삭제
 	@GetMapping("/delete/{cartNo}")
 	public String cartItemDelete(@PathVariable("cartNo") Long cartNo, RedirectAttributes ra, HttpSession session) throws Exception {
-		
-		cartService.cartDelete(cartNo);
+		Long memberNo = (Long) session.getAttribute("memberNo");
+		cartService.cartDelete(cartNo, memberNo);
 		
 		// 장바구니 삭제 메시지
 		ra.addFlashAttribute("msg", "cartDeleteSuccess");

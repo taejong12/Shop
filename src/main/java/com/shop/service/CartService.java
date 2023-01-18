@@ -17,6 +17,7 @@ public interface CartService {
 	Page<CartDto> cartPaging(Pageable pageable, Long memberNo) throws Exception;
 
 	// 장바구니 삭제
-	void cartDelete(Long cartNo) throws Exception;
+	void cartDelete(Long cartNo, Long memberNo) throws Exception;
+
 	
 }

@@ -7,6 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Cart List</title>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+	integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+	crossorigin="anonymous"></script>
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -22,7 +26,7 @@
 	<form>
 		<table class="table table-striped table-hover">
 			<tr>
-				<th><input type="checkbox" onclick="selectAll(this);"/>전체선택</th>
+				<th><input type="checkbox" name="selectAll" id="selectAll"/>전체선택</th>
 				<th>상품이미지</th>
 				<th>상품명</th>
 				<th>상품가격</th>
@@ -33,7 +37,7 @@
 			</tr>
 			<c:forEach items="${cartList.content}" var="cartList">
 				<tr>
-					<td><input type="checkbox" name="cartCheckbox"></td>
+					<td><input type="checkbox" name="cartCheckbox" class="cartCheckbox" data-cartNo="${cartList.cartNo}"></td>
 					<td><img src="/upload/${cartList.storedItemFile}" alt="이미지"
 						style="width: 100px; height: 100px;"></td>
 					<td><a href="/item/detail/${cartList.itemNo}">${cartList.itemTitle}</a></td>
@@ -97,26 +101,55 @@
 
 		<button type="button" class="btn btn-primary"
 			onclick="location.href='/order/cartItem';">주문하기</button>
+		<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
 	</form>
-	
+
 	<script type="text/javascript">
-		// 삭제 버튼 클릭시
-		function cartItmeDeleteCheck() {
-			if (confirm("정말 삭제하시겠습니까?")) {
-				location.href = '/cart/delete/';
-				return false;
-			} else {
-				return false;
-			}
-		}
 		
-		function selectAll(selectAll){
-			const checkboxes = document.querySelectorAll("input[type='checkbox']");
+		// 전체 선택 및 해제
+		$("#selectAll").click(function(){
+			var chk = $("#selectAll").prop("checked");
+			if(chk) {
+				$(".cartCheckbox").prop("checked", true);
+			} else {
+				$(".cartCheckbox").prop("checked", false);
+			}
+		});
+		
+		// 전체가 아니면 전체선택 해제
+		$(".cartCheckbox").click(function(){
+			$("#selectAll").prop("checked", false);
+		});
+	
+		
+		// 선택 삭제
+		$("#cartCheckDelete").click(function(){
+			let confirm = confirm("정말 삭제하시겠습니까?");
 			
-			checkboxes.forEach((checkbox) => {
-				checkbox.checked = selectAll.checked
-			})
-		}
+			if(confirm){
+				let checkArr = new Array();
+				
+				$("input[class='cartCheckbox']:checked").each(function(){
+					checkArr.push($(this).attr("data-cartNo"));
+				});
+				
+				$.ajax({
+					url:"/cart/delete",
+					type:"post",
+					data:{
+						checkArr : checkArr
+					},
+					success : function(){
+						location.href="/cart/list/"+"${sessionScope.memberNo}";
+					}
+				});
+				
+			}
+			
+			
+		});
+		
+		
 	</script>
 
 	<script type="text/javascript">
