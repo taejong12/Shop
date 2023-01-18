@@ -100,6 +100,7 @@
 		function itmeDeleteCheck(){
 			if(confirm("정말 삭제하시겠습니까?")){				
 				location.href='/item/delete/${itemDetailList.itemNo}';
+				return false;
 			}  else {
 				return false;
 			}

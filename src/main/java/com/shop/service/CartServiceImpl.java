@@ -110,4 +110,10 @@ public class CartServiceImpl implements CartService {
 		return cartPage;
 	}
 
+	@Override
+	public void cartDelete(Long cartNo) throws Exception {
+		cartRepository.deleteById(cartNo);
+		
+	}
+
 }

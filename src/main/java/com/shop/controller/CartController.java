@@ -1,5 +1,7 @@
 package com.shop.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -10,11 +12,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shop.dto.CartDto;
-import com.shop.dto.ItemDto;
+
 import com.shop.service.CartService;
 
 import lombok.RequiredArgsConstructor;
@@ -63,6 +65,17 @@ public class CartController {
 		
 	}
 	
-	
+	// 장바구니 삭제
+	@GetMapping("/delete/{cartNo}")
+	public String cartItemDelete(@PathVariable("cartNo") Long cartNo, RedirectAttributes ra, HttpSession session) throws Exception {
+		
+		cartService.cartDelete(cartNo);
+		
+		// 장바구니 삭제 메시지
+		ra.addFlashAttribute("msg", "cartDeleteSuccess");
+		return "redirect:/cart/list/"+session.getAttribute("memberNo");
+		
+	}
+		
 	
 }
