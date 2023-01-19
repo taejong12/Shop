@@ -3,8 +3,6 @@ package com.shop.dto;
 import java.sql.Date;
 
 import com.shop.entity.CartEntity;
-import com.shop.entity.ItemEntity;
-import com.shop.entity.MemberEntity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +31,11 @@ public class CartDto {
 		cartDto.setCartNo(cartEntity.getCartNo());
 		cartDto.setMemberNo(cartEntity.getMemberEntity().getMemberNo());
 		cartDto.setItemNo(cartEntity.getItemEntity().getItemNo());
-		cartDto.setStoredItemFile(cartEntity.getItemEntity().getItemFileEntityList().getItemFileStoredFileName());
+		
+		if(cartEntity.getItemEntity().getItemFileAttached()==1) {
+			cartDto.setStoredItemFile(cartEntity.getItemEntity().getItemFileEntityList().getItemFileStoredFileName());
+		}
+		
 		cartDto.setItemTitle(cartEntity.getItemEntity().getItemTitle());
 		cartDto.setItemPrice(cartEntity.getItemEntity().getItemPrice());
 		cartDto.setCartItemAmount(cartEntity.getCartItemAmount());

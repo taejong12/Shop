@@ -42,7 +42,15 @@
 						style="width: 100px; height: 100px;"></td>
 					<td><a href="/item/detail/${cartList.itemNo}">${cartList.itemTitle}</a></td>
 					<td>${cartList.itemPrice}원</td>
-					<td>${cartList.cartItemAmount}개</td>
+					<td>
+						<div>
+							<input type="hidden" name="itemNo" class="itemNo" value="${cartList.itemNo}" />
+							<button type="button" class="cartItemPlus">+</button>
+							<input type="text" name="cartItemAmount" class="cartItemAmount" value="${cartList.cartItemAmount}" />개
+							<button type="button" class="cartItemReduction">-</button>
+							<button type="button" class="cartItemAmountModify" data-cartno="${cartList.cartNo}">변경</button>
+						</div>
+					</td>
 					<td>${cartList.itemPrice * cartList.cartItemAmount}원</td>
 					<td>
 						<button type="button" class="btn btn-primary"
@@ -50,8 +58,6 @@
 						location.href='/cart/delete/${cartList.cartNo}';
 						} return false;">삭제</button>
 					</td>
-
-
 				</tr>
 			</c:forEach>
 		</table>
@@ -103,6 +109,60 @@
 			onclick="location.href='/order/cartItem';">주문하기</button>
 		<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
 	</form>
+	
+	<script type="text/javascript">
+	
+		// 수량 증가
+		$(".cartItemPlus").click(function(){
+			let cartItemAmount = $(this).parent('div').find("input[name=cartItemAmount]").val();
+			$(this).parent("div").find("input[name=cartItemAmount]").val(++cartItemAmount);
+
+		});
+		
+		// 수량 감소
+		$(".cartItemReduction").click(function(){
+			let cartItemAmount = $(this).parent('div').find("input[name=cartItemAmount]").val();
+			if(cartItemAmount > 1 ){
+				$(this).parent("div").find("input[name=cartItemAmount]").val(--cartItemAmount);
+			}
+		});
+		
+		$(".cartItemAmountModify").click(function(){
+			
+			if(confirm("변경하시겠습니까?")){
+				
+				
+				const cartItemAmountModify = $(this).parent('div').find("input[name=cartItemAmount]").val();
+				const itemNo = $(this).parent('div').find("input[class='itemNo']").val();
+				const cartNo = $(this).data("cartno");
+				
+				console.log(cartItemAmountModify);
+				console.log(itemNo);
+				console.log(cartNo);
+				
+				const cartItemAmountModifyData = {		
+					"memberNo" : ${sessionScope.memberNo},
+					"itemNo" : itemNo,
+					"cartNo" : cartNo,
+					"cartItemAmount" : cartItemAmountModify
+				}
+				
+				 $.ajax({
+					url:"/cart/amountModify",
+					type:"post",
+					data:cartItemAmountModifyData,
+					success:function(data){
+						alert("변경완료.");
+						location.href="/cart/list/"+"${sessionScope.memberNo}";
+					},
+					error:function(){
+						alert("장바구니 수량 변경 중 에러 발생");
+					}
+				}) 
+			}
+			
+		});
+	</script>
 
 	<script type="text/javascript">
 		
@@ -124,13 +184,19 @@
 		
 		// 선택 삭제
 		$("#cartCheckDelete").click(function(){
-			let confirm = confirm("정말 삭제하시겠습니까?");
 			
-			if(confirm){
+			if(!$(".cartCheckbox").prop("checked")){
+				alert("삭제하실 장바구니를 선택해주세요.");
+				return false;
+			}
+			
+			let confirmVal = confirm("정말 삭제하시겠습니까?");
+			
+			if(confirmVal){
 				let checkArr = new Array();
 				
 				$("input[class='cartCheckbox']:checked").each(function(){
-					checkArr.push($(this).attr("data-cartNo"));
+					checkArr.push($(this).data("cartno"));
 				});
 				
 				$.ajax({
@@ -139,16 +205,22 @@
 					data:{
 						checkArr : checkArr
 					},
-					success : function(){
-						location.href="/cart/list/"+"${sessionScope.memberNo}";
+					success : function(data){
+						
+						if(data == "checkDelete"){
+							location.href="/cart/list/"+"${sessionScope.memberNo}";							
+						} else{
+							alert("삭제 실패.");
+						}
+					},
+					error : function(){
+						alert("장바구니 일괄 삭제 ajax 실행 실패");
 					}
 				});
 				
 			}
 			
-			
 		});
-		
 		
 	</script>
 

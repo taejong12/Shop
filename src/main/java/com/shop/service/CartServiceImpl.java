@@ -102,7 +102,9 @@ public class CartServiceImpl implements CartService {
 		Optional<MemberEntity> memberEntity = memberRepository.findById(memberNo);
 				
 		// 멤버 아이디 해당하는 페이지
-		Page<CartEntity> cartEntities = cartRepository.findByMemberEntity(memberEntity.get(), PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "itemEntity")));
+		Page<CartEntity> cartEntities = cartRepository.findByMemberEntity(memberEntity.get(), PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "cartNo")));
+		
+		
 		
 		// 페이지 객체 변환
 		Page<CartDto> cartPage = cartEntities.map(cart -> new CartDto(cart.getCartNo(), cart.getMemberEntity().getMemberNo(), cart.getItemEntity().getItemNo(), cart.getItemEntity().getItemFileEntityList().getItemFileStoredFileName(), cart.getItemEntity().getItemTitle(), cart.getItemEntity().getItemPrice(), cart.getCartItemAmount(), cart.getCreatedTime(), cart.getUpdatedTime()));
@@ -110,10 +112,32 @@ public class CartServiceImpl implements CartService {
 		return cartPage;
 	}
 
+	// 장바구니 삭제
 	@Override
 	public void cartDelete(Long cartNo, Long memberNo) throws Exception {
 		Optional<MemberEntity> memberEntity = memberRepository.findById(memberNo);
-		cartRepository.deleteByIdAndMemberEntity(cartNo, memberEntity.get());
+		cartRepository.deleteByCartNoAndMemberEntity(cartNo, memberEntity.get());
+		
+	}
+
+	// 장바구니 일괄 삭제
+	@Override
+	public void cartCheckDelete(Long cartNo, Long memberNo) throws Exception {
+		Optional<MemberEntity> memberEntity = memberRepository.findById(memberNo);
+		cartRepository.deleteByCartNoAndMemberEntity(cartNo, memberEntity.get());
+	}
+
+	// 장바구니 수량수정
+	@Override
+	public void cartItemAmountModify(CartDto cartDto) throws Exception {
+		
+		Optional<MemberEntity> memberEntity = memberRepository.findById(cartDto.getMemberNo());
+		
+		Optional<ItemEntity> itemEntity = itemRepository.findById(cartDto.getItemNo());
+		
+		CartEntity cartEntity = CartEntity.toCartUpdateEntity(memberEntity.get(), itemEntity.get(), cartDto);
+
+		cartRepository.save(cartEntity);
 		
 	}
 

@@ -82,7 +82,6 @@
 				form.itemFile.focus();
 				return false;
 			}
-			
 				
 		}		
 	</script>

@@ -20,9 +20,11 @@
 
 	<h2>게시물 목록</h2>
 
-	<form class="form-inline d-flex justify-content-end" method="GET" action="/item/paging">
+	<form class="form-inline d-flex justify-content-end" method="GET"
+		action="/item/paging">
 		<div class="form-group mx-sm-3 mb-2">
-			<input type="text" class="form-control" id="searchText" name="searchText" value="${param.searchText}">
+			<input type="text" class="form-control" id="searchText"
+				name="searchText" value="${param.searchText}">
 		</div>
 		<button type="submit" class="btn btn-light mb-2">검색</button>
 	</form>
@@ -37,17 +39,27 @@
 			<th>상품조회수</th>
 			<th>상품등록일</th>
 		</tr>
-		<c:forEach items="${itemList.content}" var="itemList">
-			<tr>
-				<td><img src="/upload/${itemList.storedItemFile}" alt="이미지"
-					style="width: 100px; height: 100px;"></td>
-				<td><a href="/item/detail/${itemList.itemNo}">${itemList.itemTitle}</a></td>
-				<td>${itemList.itemPrice}원</td>
-				<td>${itemList.itemStock}개</td>
-				<td>${itemList.itemHits}회</td>
-				<td>${itemList.itemCreateDate}</td>
-			</tr>
-		</c:forEach>
+		
+		<c:choose>
+			<c:when test="${itemList.content eq null}">
+				<tr>
+					<td colspan="6"><h2>등록된 상품이 없습니다.</h2></td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach items="${itemList.content}" var="itemList">
+					<tr>
+						<td><img src="/upload/${itemList.storedItemFile}" alt="이미지"
+							style="width: 100px; height: 100px;"></td>
+						<td><a href="/item/detail/${itemList.itemNo}">${itemList.itemTitle}</a></td>
+						<td>${itemList.itemPrice}원</td>
+						<td>${itemList.itemStock}개</td>
+						<td>${itemList.itemHits}회</td>
+						<td>${itemList.itemCreateDate}</td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
 	</table>
 
 
@@ -57,6 +69,7 @@
 				onclick="location.href='/item/write';">작성하기</button>
 		</div>
 	</c:if>
+
 	<!-- 페이징 영역 시작 -->
 	<div class="text-xs-center">
 		<ul class="pagination justify-content-center">
@@ -99,18 +112,16 @@
 		</ul>
 	</div>
 	<!-- 페이징 영역 끝 -->
-	
+
 	<script type="text/javascript">
 		const redirectAlert = "${msg}";
-		if(redirectAlert == "itemWriteSuccess"){
+		if (redirectAlert == "itemWriteSuccess") {
 			alert("상품이 등록되었습니다.");
 		}
-		
-		if(redirectAlert == "itemDeleteSuccess"){
+
+		if (redirectAlert == "itemDeleteSuccess") {
 			alert("상품이 삭제되었습니다.");
 		}
-		
-		
 	</script>
 
 

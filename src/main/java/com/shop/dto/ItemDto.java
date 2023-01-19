@@ -82,5 +82,19 @@ public class ItemDto {
 		this.itemFileAttached=itemFileAttached;
 	}
 
+	public ItemDto(Long itemNo, String itemTitle, int itemPrice, int itemStock, int itemHits, Date itemCreateDate,
+			int itemFileAttached) {
+		super();
+		this.itemNo = itemNo;
+		this.itemTitle = itemTitle;
+		this.itemPrice = itemPrice;
+		this.itemStock = itemStock;
+		this.itemHits = itemHits;
+		this.itemCreateDate = itemCreateDate;
+		this.itemFileAttached = itemFileAttached;
+	}
+	
+	
+
 	
 }

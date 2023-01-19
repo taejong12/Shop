@@ -1,9 +1,6 @@
 package com.shop.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -20,7 +17,6 @@ public interface CartRepository extends JpaRepository<CartEntity, Long> {
 	Page<CartEntity> findByMemberEntity(MemberEntity memberEntity, Pageable pageable);
 
 	// 해당 멤버의 카트 넘버 삭제
-	void deleteByIdAndMemberEntity(Long cartNo, MemberEntity memberEntity);
-
+	void deleteByCartNoAndMemberEntity(Long cartNo, MemberEntity memberEntity);
 
 }

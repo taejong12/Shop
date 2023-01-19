@@ -1,5 +1,7 @@
 package com.shop.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -77,5 +80,40 @@ public class CartController {
 		
 	}
 		
+	// 장바구니 일괄삭제
+	@PostMapping("/delete")
+	@ResponseBody
+	public String cartItemCheckDelete(CartDto cartDto, HttpSession session, @RequestParam(value="checkArr[]") List<String> checkArr) throws Exception {
+		
+		Long memberNo = (Long) session.getAttribute("memberNo");
+		
+		String result = "";
+		Long cartNo = (long) 0;
+		
+		for(String i: checkArr) {
+			cartNo=Long.parseLong(i);
+			cartDto.setCartNo(cartNo);
+			cartService.cartCheckDelete(cartDto.getCartNo(), memberNo);			
+		}
+		
+		result="checkDelete";
 	
+		return result;
+	}
+	
+	// 장바구니 수량 수정
+	@PostMapping("/amountModify")
+	@ResponseBody
+	public String cartItemAmountModify(@ModelAttribute CartDto cartDto) throws Exception {
+		System.out.println("cartDto : "+cartDto);
+		
+		String result = "";
+		
+		cartService.cartItemAmountModify(cartDto);			
+		
+		result="amountModify";
+		
+		return result;
+	}
+		
 }

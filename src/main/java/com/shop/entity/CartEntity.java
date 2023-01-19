@@ -38,7 +38,7 @@ public class CartEntity extends BaseEntity {
 	// 멤버 조인
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="member_no")
-	private MemberEntity memberEntity ;
+	private MemberEntity memberEntity;
 	
 	// 상품 조인
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -55,6 +55,14 @@ public class CartEntity extends BaseEntity {
 		return cartEntity;
 	}
 
+	public static CartEntity toCartUpdateEntity(MemberEntity memberEntity, ItemEntity itemEntity, CartDto cartDto) {
+		CartEntity cartEntity = new CartEntity();
+		cartEntity.setCartNo(cartDto.getCartNo());
+		cartEntity.setMemberEntity(memberEntity);
+		cartEntity.setItemEntity(itemEntity);
+		cartEntity.setCartItemAmount(cartDto.getCartItemAmount());
+		return cartEntity;
+	}
 
 	
 

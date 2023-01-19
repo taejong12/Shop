@@ -19,5 +19,11 @@ public interface CartService {
 	// 장바구니 삭제
 	void cartDelete(Long cartNo, Long memberNo) throws Exception;
 
+	// 장바구니 일괄 삭제
+	void cartCheckDelete(Long cartNo, Long memberNo) throws Exception;
+
+	// 장바구니 수량 수정
+	void cartItemAmountModify(CartDto cartDto) throws Exception;
+
 	
 }

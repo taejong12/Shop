@@ -217,7 +217,9 @@ public class ItemServiceImpl implements ItemService {
 		System.out.println("itemEntities.isFirst() =" + itemEntities.isFirst()); // 첫 페이지 여부
 		System.out.println("itemEntities.isLast() =" + itemEntities.isLast()); // 마지막 페이지 여부
 
-	
+		itemEntities.getSize();
+		itemEntities.getContent().get(0).getItemFileAttached();
+		
 		// 페이지 객체 변환
 		Page<ItemDto> itemDtos = itemEntities.map(item -> new ItemDto(item.getItemNo(), item.getItemTitle(),
 				item.getItemPrice(), item.getItemStock(), item.getItemHits(), item.getCreatedTime(),
