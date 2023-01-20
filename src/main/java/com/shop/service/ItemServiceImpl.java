@@ -79,7 +79,7 @@ public class ItemServiceImpl implements ItemService {
 			// System.out.println("originalFilename : "+originalFilename);
 			String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
 			// System.out.println("storedFileName : "+storedFileName);
-			String savePath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + storedFileName; // 저장경로 반드시 있어야 한다. 저장까지 셋팅
+			String savePath = "C:/SpringBootShop/Shop/springboot_shop_item_img/" + storedFileName; // 저장경로 반드시 있어야 한다. 저장까지 셋팅
 			itemFile.transferTo(new File(savePath)); // 스프링멀티파트파일에서 제공하는 메서드, 지정한 경로로 파일을 넘긴다, 예외처리해줘야한다(서블릿쪽으로 떠넘기기) 
 			// 여기까지 파일 저장만 처리
 
@@ -133,7 +133,7 @@ public class ItemServiceImpl implements ItemService {
 			// 기존에 있던 파일을 삭제 후 업데이트
 			
 			// 저장된 파일 삭제
-			String savedPath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + itemDto.getStoredItemFile();
+			String savedPath = "C:/SpringBootShop/Shop/springboot_shop_item_img/" + itemDto.getStoredItemFile();
 			File deleteFile = new File(savedPath);
 			
 			if(deleteFile.exists()) {
@@ -150,7 +150,7 @@ public class ItemServiceImpl implements ItemService {
 			String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
 			
 			// 이미지 파일 저장경로 설정
-			String savePath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + storedFileName; // 저장경로 반드시 있어야 한다. 저장까지 셋팅
+			String savePath = "C:/SpringBootShop/Shop/springboot_shop_item_img/" + storedFileName; // 저장경로 반드시 있어야 한다. 저장까지 셋팅
 			
 			// 이미지 파일 저장경로에 저장
 			itemFile.transferTo(new File(savePath)); // 스프링멀티파트파일에서 제공하는 메서드, 지정한 경로로 파일을 넘긴다, 예외처리해줘야한다(서블릿쪽으로 떠넘기기) 
@@ -185,7 +185,7 @@ public class ItemServiceImpl implements ItemService {
 		ItemDto itemDto = ItemDto.toItemDto(itemEntity);
 		  
 		// 저장된 파일 삭제
-		String savedPath = "C:/FirstTestSpringBoot/Shop/springboot_shop_item_img/" + itemDto.getStoredItemFile();
+		String savedPath = "C:/SpringBootShop/Shop/springboot_shop_item_img/" + itemDto.getStoredItemFile();
 		File deleteFile = new File(savedPath);
 		
 		if(deleteFile.exists()) {
