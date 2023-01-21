@@ -21,7 +21,6 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
 
-
 	<h2>장바구니 목록</h2>
 	
 		<table class="table table-striped table-hover">
@@ -40,12 +39,13 @@
 					<td class="cartPrice">
 						<input type="hidden" class="itemPrice" value="${cartList.itemPrice}">
 						<input type="hidden" class="itemTotalCount" value="${cartList.cartItemAmount}"> 
-						<input type="hidden" class="itemTotalPrice" value="${cartList.itemPrice * cartList.cartItemAmount}"> 
+						<input type="hidden" class="itemTotalPrice" value="${cartList.itemPrice * cartList.cartItemAmount}"> 	
+						<input type="checkbox" name="cartCheckbox"
+							class="cartCheckbox" data-cartNo="${cartList.cartNo}">
 					</td>
-					<td><input type="checkbox" name="cartCheckbox"
-						class="cartCheckbox" data-cartNo="${cartList.cartNo}"></td>
 					<td><img src="/upload/${cartList.storedItemFile}" alt="이미지"
-						style="width: 100px; height: 100px;"></td>
+						style="width: 100px; height: 100px;">
+					</td>
 					<td><a href="/item/detail/${cartList.itemNo}">${cartList.itemTitle}</a></td>
 					<td>${cartList.itemPrice}원</td>
 					<td>
@@ -123,17 +123,17 @@
 							<table>
 								<tr>
 									<td>총 상품 가격</td>
-									<td><span class="totalPrice_span">70000</span> 원</td>
+									<td><span class="totalPrice_span">0</span> 원</td>
 								</tr>
 								<tr>
 									<td>배송비</td>
-									<td><span class="deliveryPrice_span">70000</span> 원</td>
+									<td><span class="deliveryPrice_span">0</span> 원</td>
 								</tr>
 								<tr>
 									<td>총 주문 상품수</td>
 									<td>
-										<span class="totalKind_span"></span>종 
-										<span class="totalCount_span"></span>개
+										<span class="totalKind_span">0</span>종 
+										<span class="totalCount_span">0</span>개
 									</td>
 								</tr>
 							</table>
@@ -147,7 +147,7 @@
 					<tbody>
 						<tr>
 							<th>총 결제 예상 금액</th>
-							<td><span class="finalTotalPrice_span">70000</span> 원</td>
+							<td><span class="finalTotalPrice_span">0</span> 원</td>
 						</tr>
 					</tbody>
 				</table>
@@ -156,11 +156,11 @@
 
 		<form action="/order/cartItem/${sessionScope.memberNo}" >
 			<button type="button" class="btn btn-primary"
-				onclick="location.href='/order/cartItem';">주문하기</button>
+				id="cartOrderBtn">주문하기</button>
+			<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
 		</form>
 			
 			
-		<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
 	
 	<script type="text/javascript">
 	
@@ -171,6 +171,16 @@
 			
 		});
 		
+		// 체크박스 선택 여부에 따른 좋압 정보 변화
+		$(".cartCheckbox").on("change", function(){
+			
+			// 총 주문 정보 세팅(총 가격, 총 갯수, 총 종류, 배송비, 최종 가격)
+			setTotalInfo($(".cartPrice"));
+		
+		});
+		
+		
+		
 		// 선택된 상품 총 정보
 		function setTotalInfo(){
 			
@@ -180,20 +190,26 @@
 			let deliveryPrice = 0; // 배송비
 			let finalTotalPrice = 0; // 최종 가격(총 가격 + 배송비)
 			
-			$(".cartPrice").each(function(index, element)){
+			// 총 주문 정보 세팅(배송비, 총 가격, 총 갯수, 종류, 최종 가격 )
+			$(".cartPrice").each(function(index, element){
 				
-				// element == this
+				// 체크여부
+				if($(element).find(".cartCheckbox").is(":checked")=== true){
+						
+					// element == this
+					
+					// 총 가격
+					totalPrice += parseInt($(element).find(".itemTotalPrice").val());
+					
+					// 총 갯수
+					totalCount += parseInt($(element).find(".itemTotalCount").val());
+					
+					// 총 종류
+					totalKind += 1;
 				
-				// 총 가격
-				totalPrice += parseInt($(element).find(".itemTotalPrice").val());
-				
-				// 총 갯수
-				totalCount += parseInt($(element).find(".itemTotalCount").val());
-				
-				// 총 종류
-				totalKind += 1;
-				
-			};
+				}
+			
+			});
 			
 			// 배송비 결정
 			if(totalPrice >= 10000) {
@@ -292,6 +308,10 @@
 			} else {
 				$(".cartCheckbox").prop("checked", false);
 			}
+			
+			// 총 주문 정보 세팅(배송비, 총 가격, 총 갯수, 종류, 최종 가격 )
+			setTotalInfo($(".cartCheckbox"));
+			
 		});
 		
 		// 전체가 아니면 전체선택 해제
@@ -345,8 +365,9 @@
 				alert("주문하실 상품을 선택해주세요.");
 				return false;
 			}
-		
 			
+			location.href='/order/cartItem';
+		
 		});
 		
 	</script>

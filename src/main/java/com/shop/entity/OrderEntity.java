@@ -1,9 +1,12 @@
 package com.shop.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -29,5 +32,23 @@ public class OrderEntity extends BaseEntity {
 			allocationSize=1 //메모리를 통해 할당할 범위 사이즈
 			)
 	private Long orderNo;
+	
+	// 멤버 조인
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="member_no")
+	private MemberEntity memberEntity;
+	
+	// 상품 조인
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="item_no")
+	private ItemEntity itemEntity;
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
