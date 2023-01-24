@@ -154,7 +154,7 @@
 			</div>
 		</div>
 
-		<form action="/order/cartItem/${sessionScope.memberNo}" >
+		<form action="/order/cartItem/${sessionScope.memberNo}" class="cartOrderForm" >
 			<button type="button" class="btn btn-primary"
 				id="cartOrderBtn">주문하기</button>
 			<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
@@ -178,7 +178,41 @@
 			setTotalInfo($(".cartPrice"));
 		
 		});
+	
+		$("#cartOrderBtn").click(function(){
+			
+			let cartCheckbox = $(".cartCheckbox");
+			
+			let num = 0;
+			
+			for(let i=0; i<cartCheckbox.length;i++){
+				if(cartCheckbox[i].checked){
+					num++;
+				}
+			}
+			
+			if(!num){
+				alert("상품을 선택해주세요.");
+				return false;
+			}
+			
+			
+			//
+			$(".cartPrice").each(function(index, element){
+				
+				// 체크여부
+				if($(element).find(".cartCheckbox").is(":checked") === true){
+						
+					
+					
+				}
+				
+			});
 		
+			
+		/* 	$(".cartOrderForm").submit(); */
+		
+		});
 		
 		
 		// 선택된 상품 총 정보
@@ -240,6 +274,7 @@
 			// 최종 가격(총 가격 + 배송비)
 			$(".finalTotalPrice_span").text(finalTotalPrice.toLocaleString());
 		}
+		
 	</script>
 
 	<script type="text/javascript">
@@ -322,8 +357,18 @@
 		// 선택 삭제
 		$("#cartCheckDelete").click(function(){
 			
-			if(!$(".cartCheckbox").prop("checked")){
-				alert("삭제하실 장바구니를 선택해주세요.");
+			let cartCheckbox = $(".cartCheckbox");
+			
+			let num = 0;
+			
+			for(let i=0; i<cartCheckbox.length;i++){
+				if(cartCheckbox[i].checked){
+					num++;
+				}
+			}
+			
+			if(!num){
+				alert("상품을 선택해주세요.");
 				return false;
 			}
 			
@@ -359,16 +404,6 @@
 			
 		});
 		
-		$("#cartOrderBtn").click(function(){
-			
-			if(!$(".cartCheckbox").prop("checked")){
-				alert("주문하실 상품을 선택해주세요.");
-				return false;
-			}
-			
-			location.href='/order/cartItem';
-		
-		});
 		
 	</script>
 

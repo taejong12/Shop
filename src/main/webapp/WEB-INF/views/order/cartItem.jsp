@@ -14,18 +14,37 @@
 	
 	<h2>주문하기</h2>
 	
+		<h3>상품정보</h3>
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>상품이미지</th>
+				<th>상품명</th>
+				<th>상품가격</th>
+				<th>선택한갯수</th>
+				<th>상품총가격</th>
+
+			</tr>
+			<c:forEach items="${cartOrderList}" var="cartOrderList">
+				<tr>
+					<td><img src="/upload/${cartOrderList.storedItemFile}" alt="이미지"
+						style="width: 100px; height: 100px;">
+					</td>
+					<td>${cartOrderList.itemTitle}</td>
+					<td>${cartOrderList.itemPrice}원</td>
+					<td>${cartOrderList.cartItemAmount}개</td>
+					<td>${cartOrderList.itemPrice * cartOrderList.cartItemAmount}원</td>
+				</tr>
+			</c:forEach>
+		</table>
+	
+	<br/>
+
+	
 	<br/>
 	
-	<h2>상품정보</h2>
+	<h3>회원정보</h3>
 	<div>
-		상품이름 상품가격 상품내용 선택한 수량
-	</div>
-	
-	<br/>
-	
-	<h2>배송정보</h2>
-	<div>
-		이름 전화번호 주소
+		아이디 이름 이메일 
 	</div>
 	
 	<br/>
