@@ -39,7 +39,8 @@
 					<td class="cartPrice">
 						<input type="hidden" class="itemPrice" value="${cartList.itemPrice}">
 						<input type="hidden" class="itemTotalCount" value="${cartList.cartItemAmount}"> 
-						<input type="hidden" class="itemTotalPrice" value="${cartList.itemPrice * cartList.cartItemAmount}"> 	
+						<input type="hidden" class="itemTotalPrice" value="${cartList.itemPrice * cartList.cartItemAmount}">
+						<input type="hidden" class="itemNo" value="${cartList.itemNo}">
 						<input type="checkbox" name="cartCheckbox"
 							class="cartCheckbox" data-cartNo="${cartList.cartNo}">
 					</td>
@@ -119,46 +120,41 @@
 			<div class="total_wrap">
 				<table>
 					<tr>
+						<td>총 상품 가격</td>
+						<td><span class="totalPrice_span">0</span> 원</td>
+					</tr>
+					<tr>
+						<td>배송비</td>
+						<td><span class="deliveryPrice_span">0</span> 원</td>
+					</tr>
+					<tr>
+						<td>총 주문 상품수</td>
 						<td>
-							<table>
-								<tr>
-									<td>총 상품 가격</td>
-									<td><span class="totalPrice_span">0</span> 원</td>
-								</tr>
-								<tr>
-									<td>배송비</td>
-									<td><span class="deliveryPrice_span">0</span> 원</td>
-								</tr>
-								<tr>
-									<td>총 주문 상품수</td>
-									<td>
-										<span class="totalKind_span">0</span>종 
-										<span class="totalCount_span">0</span>개
-									</td>
-								</tr>
-							</table>
+							<span class="totalKind_span">0</span>종 
+							<span class="totalCount_span">0</span>개
 						</td>
 					</tr>
 				</table>
-
+				
 				<hr>
 
 				<table>
-					<tbody>
-						<tr>
-							<th>총 결제 예상 금액</th>
-							<td><span class="finalTotalPrice_span">0</span> 원</td>
-						</tr>
-					</tbody>
+					<tr>
+						<th>총 결제 예상 금액</th>
+						<td><span class="finalTotalPrice_span">0</span> 원</td>
+					</tr>
 				</table>
 			</div>
 		</div>
 
-		<form action="/order/cartItem/${sessionScope.memberNo}" class="cartOrderForm" >
-			<button type="button" class="btn btn-primary"
-				id="cartOrderBtn">주문하기</button>
-			<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
-		</form>
+		<!-- 주문버튼 -->
+		<button type="button" class="btn btn-primary" id="cartOrderBtn">주문하기</button>
+		
+		<!-- 일괄삭제 버튼 -->
+		<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
+		
+		<!-- 주문 form -->
+		<form action="/order/cartItem/${sessionScope.memberNo}" class="cartOrderForm" ></form>
 			
 			
 	
@@ -171,7 +167,7 @@
 			
 		});
 		
-		// 체크박스 선택 여부에 따른 좋압 정보 변화
+		// 체크박스 선택 여부에 따른 종합 정보 변화
 		$(".cartCheckbox").on("change", function(){
 			
 			// 총 주문 정보 세팅(총 가격, 총 갯수, 총 종류, 배송비, 최종 가격)
@@ -179,6 +175,7 @@
 		
 		});
 	
+		// 주문하기 버튼 클릭시 발생
 		$("#cartOrderBtn").click(function(){
 			
 			let cartCheckbox = $(".cartCheckbox");
@@ -196,21 +193,46 @@
 				return false;
 			}
 			
+			// 동적으로 생성할 <input> 태그 문자열 값이 저장될 변수 선언 및 초기화
+			let form_contents ='';
 			
-			//
+			// <input>의 name값에 orders[0], orders[1], orders[2] 와 값이 index 값을 주어야 하는데 이러한 index값 역할을 할 orderNumber 변수를 선언하고 0으로 초기화합니다.  
+			let orderNumber = 0;
+			
+			// 상품의 데이터가 저장된 <input> 값들을 감싸고 있는 <td> 태그 반복해서 접근하는 메서드를 추가합니다.
 			$(".cartPrice").each(function(index, element){
 				
-				// 체크여부
+				/*  
+					is() 메서드는 선택한 요소 중 하나가 is( 선택한 Element )와 일치하는지 확인합니다.
+					결과값은 참(true)/거짓(false)을 나타냅니다.
+					체크여부 
+				*/
 				if($(element).find(".cartCheckbox").is(":checked") === true){
 						
+					// 변수를 선언하여 접근한 <td>태그 내부에 있는 <input> 태그의 값들로 초기화해줍니다.
+					// 상품 넘버
+					let itemNo = $(element).find(".itemNo").val();
 					
+					// 장바구니 총 갯수
+					let cartItemAmount = $(element).find(".itemTotalCount").val();
+					
+					// 두 변수의 값과 index(each 메서드 첫 번째 인자) 값을 활용해서 서버로 전송되어야 할 <input> 태그를 문자열 값을 만들어내고 앞서 선언한 form_contents 변수에 문자열을 더해줍니다.
+					let itemNo_input =  "<input name='orders[" + orderNumber + "].itemNo' type='hidden' value='" + itemNo + "'>";
+					form_contents += itemNo_input;
+					
+					let cartItemAmount_input = "<input name='orders[" + orderNumber + "].cartItemAmount' type='hidden' value='" + cartItemAmount + "'>";
+					form_contents += cartItemAmount_input;
+					
+					// 그리고 idnex값 역할을 하는 orderNumber는 다음 객체에 접근할 때 +1이 될 수 있도록 코드를 추가합니다.
+					orderNumber += 1;
 					
 				}
 				
 			});
 		
-			
-		/* 	$(".cartOrderForm").submit(); */
+			// each 메서드를 벗어나서 form_contents 변수에 저장된 문자열(<input> 태그) 값을 주문 페이지 이동 <form> 태그 내부에 추가되도록 코드를 추가하고, <form> 태그를 서버로 전송합니다.
+			$(".cartOrderForm").html(form_contents);
+			$(".cartOrderForm").submit();
 		
 		});
 		
@@ -232,13 +254,13 @@
 						
 					// element == this
 					
-					// 총 가격
+					// 선택된 상품의 총 가격
 					totalPrice += parseInt($(element).find(".itemTotalPrice").val());
 					
-					// 총 갯수
+					// 선택된 상품의 총 갯수
 					totalCount += parseInt($(element).find(".itemTotalCount").val());
 					
-					// 총 종류
+					// 선택된 상품의 총 종류
 					totalKind += 1;
 				
 				}
@@ -257,7 +279,7 @@
 			// 최종 가격
 			finalTotalPrice = totalPrice + deliveryPrice;
 			
-			// html 단으로 값 보내기
+			// html 단으로 값 보내기 .text
 			// 일반적인 숫자 형식이 아닌 통화형식으로 출력될 수 있도록 toLocaleString() 메서드 사용
 			// 총 가격
 			$(".totalPrice_span").text(totalPrice.toLocaleString());
@@ -293,17 +315,19 @@
 			}
 		});
 		
+		// 변경 버튼 클릭시 발생
 		$(".cartItemAmountModify").click(function(){
 			
 			if(confirm("변경하시겠습니까?")){
 				
+				// 클릭한 상품의 장바구니 총 갯수 값
 				const cartItemAmountModify = $(this).parent('div').find("input[name=cartItemAmount]").val();
-				const itemNo = $(this).parent('div').find("input[class='itemNo']").val();
-				const cartNo = $(this).data("cartno");
 				
-				console.log(cartItemAmountModify);
-				console.log(itemNo);
-				console.log(cartNo);
+				// 클릭한 상품의 넘버
+				const itemNo = $(this).parent('div').find("input[class='itemNo']").val();
+				
+				// 클릭한 상품의 장바구니 넘버
+				const cartNo = $(this).data("cartno");
 				
 				const cartItemAmountModifyData = {		
 					"memberNo" : ${sessionScope.memberNo},
@@ -367,6 +391,7 @@
 				}
 			}
 			
+			// if(!num) 은 if(num == 0) 과 같은 구문
 			if(!num){
 				alert("상품을 선택해주세요.");
 				return false;
@@ -377,6 +402,7 @@
 			if(confirmVal){
 				let checkArr = new Array();
 				
+				// 체크된 체크박스의 장바구니 넘버 값을 배열 담기
 				$("input[class='cartCheckbox']:checked").each(function(){
 					checkArr.push($(this).data("cartno"));
 				});

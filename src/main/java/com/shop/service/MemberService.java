@@ -28,4 +28,7 @@ public interface MemberService {
 	
 	// 회원가입 이메일 중복확인
 	public MemberDto emailCheck(String memberEmail) throws Exception;
+
+	
+
 }
