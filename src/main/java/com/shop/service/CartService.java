@@ -8,22 +8,22 @@ import com.shop.dto.CartDto;
 public interface CartService {
 
 	// 장바구니 등록
-	CartDto cartItemSave(CartDto cartDto) throws Exception;
+	public CartDto cartItemSave(CartDto cartDto) throws Exception;
 
 	// 장바구니 중복 확인
-	CartDto cartItemCheck(CartDto cartDto) throws Exception;
+	public CartDto cartItemCheck(CartDto cartDto) throws Exception;
 
 	// 장바구니 목록
-	Page<CartDto> cartPaging(Pageable pageable, Long memberNo) throws Exception;
+	public Page<CartDto> cartPaging(Pageable pageable, Long memberNo) throws Exception;
 
 	// 장바구니 삭제
-	void cartDelete(Long cartNo, Long memberNo) throws Exception;
+	public void cartDelete(Long cartNo, Long memberNo) throws Exception;
 
 	// 장바구니 일괄 삭제
-	void cartCheckDelete(Long cartNo, Long memberNo) throws Exception;
+	public void cartCheckDelete(Long cartNo, Long memberNo) throws Exception;
 
 	// 장바구니 수량 수정
-	void cartItemAmountModify(CartDto cartDto) throws Exception;
+	public void cartItemAmountModify(CartDto cartDto) throws Exception;
 
 	
 }

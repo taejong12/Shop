@@ -2,19 +2,25 @@ package com.shop.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.shop.dto.CartDto;
 import com.shop.dto.OrderDto;
-import com.shop.dto.OrderListDto;
 
 public interface OrderService {
 
 	// 장바구니 상품 결제 페이지
-	List<OrderDto> cartItemOrderList(List<OrderDto> orderDto) throws Exception;
+	public List<OrderDto> cartItemOrderList(List<OrderDto> orderDto) throws Exception;
 
-	// 주문하기 회원정보
-	OrderDto memberInfo(Long memberNo) throws Exception;
+	// 결제페이지 회원정보
+	public OrderDto memberInfo(Long memberNo) throws Exception;
 
-	// 결제완료
-	void orderSave(Long memberNo, List<OrderDto> orders) throws Exception;
+	// 결제완료(장바구니)
+	public void orderSave(Long memberNo, List<OrderDto> orders) throws Exception;
+
+	// 주문내역 목록
+	public Page<OrderDto> orderPaging(Pageable pageable, Long memberNo) throws Exception;
 
 	
 }

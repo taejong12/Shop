@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import com.shop.entity.ItemEntity;
 import com.shop.entity.MemberEntity;
+import com.shop.entity.OrderEntity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,9 @@ public class OrderDto {
 	private Long memberNo; // 회원 넘버
 	
 	// 상품 테이블
+	private String storedItemFile; // 상품 이미지 이름
 	private String itemTitle; // 상품명
 	private int itemPrice; // 상품가격
-	private String storedItemFile; // 상품 이미지 이름
 	
 	// 멤버 테이블
 	private String memberId; // 회원 아이디
@@ -61,5 +62,24 @@ public class OrderDto {
 		orderDto.setMemberEmail(memberEntity.getMemberEmail());
 		return orderDto;
 	}
+
+	public OrderDto(Long orderNo, Long memberNo, Long itemNo, String storedItemFile, String itemTitle, int itemPrice, 
+			int cartItemAmount,  int itemTotalPrice, String memberId,  Date orderItemCreateDate, Date orderItemUpdateDate,
+			String itemPayStatus) {
+		this.orderNo = orderNo;
+		this.memberNo = memberNo;
+		this.itemNo = itemNo;
+		this.storedItemFile = storedItemFile;
+		this.itemTitle = itemTitle;
+		this.itemPrice = itemPrice;
+		this.cartItemAmount = cartItemAmount;
+		this.itemTotalPrice = itemTotalPrice;
+		this.memberId = memberId;
+		this.orderItemCreateDate = orderItemCreateDate;
+		this.orderItemUpdateDate = orderItemUpdateDate;
+		this.itemPayStatus = itemPayStatus;
+	}
+
+	
 	
 }

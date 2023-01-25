@@ -2,12 +2,16 @@ package com.shop.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.shop.dto.CartDto;
 import com.shop.dto.OrderDto;
 import com.shop.dto.OrderListDto;
 import com.shop.service.MemberService;
@@ -22,11 +26,18 @@ public class OrderController {
 
 	private final OrderService orderService;
 	
-	private final MemberService memberService;
-	
 	// 주문내역 목록
 	@GetMapping("/list/{memberNo}")
-	public String cartList() {
+	public String cartList(@PageableDefault(page = 1) Pageable pageable, Model model, @PathVariable("memberNo") Long memberNo) throws Exception {
+		
+		Page<OrderDto> orderList =orderService.orderPaging(pageable, memberNo); 
+		int blockLimit =3; 
+		int startPage =(((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; 
+		int endPage = ((startPage + blockLimit - 1) < orderList.getTotalPages()) ? startPage + blockLimit - 1 : orderList.getTotalPages();
+		
+		model.addAttribute("orderList", orderList); 
+		model.addAttribute("startPage", startPage); 
+		model.addAttribute("endPage", endPage); 
 		return "/order/list";
 	}
 	
