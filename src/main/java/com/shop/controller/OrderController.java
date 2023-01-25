@@ -41,11 +41,13 @@ public class OrderController {
 	@GetMapping("/cartItem/{memberNo}")
 	public String orderCartItem(@PathVariable("memberNo") Long memberNo, Model model, OrderListDto orders) throws Exception {
 		
-//		System.out.println("memberNo : "+memberNo);
-//		System.out.println("orders : "+orders.getOrders());
+		System.out.println("memberNo : "+memberNo);
+		System.out.println("orders : "+orders.getOrders());
 		
 		// 상품 목록
 		model.addAttribute("cartOrderList", orderService.cartItemOrderList(orders.getOrders()));
+		
+		System.out.println("cartOrderList : "+ orderService.cartItemOrderList(orders.getOrders()));
 		
 		// 회원 정보
 		model.addAttribute("memberInfo", orderService.memberInfo(memberNo));
@@ -54,8 +56,12 @@ public class OrderController {
 	}
 	
 	// 결제완료 페이지
-	@GetMapping("/success")
-	public String orderSuccess() {
+	@GetMapping("/success/{memberNo}")
+	public String orderSuccess(@PathVariable("memberNo") Long memberNo, OrderListDto orders) throws Exception {
+		
+		System.out.println("orderDto : "+orders);
+		
+		orderService.orderSave(memberNo, orders.getOrders());
 		
 		return "/order/success";
 	}

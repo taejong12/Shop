@@ -37,6 +37,8 @@ public class OrderDto {
 	private Date orderItemCreateDate; // 상품결제일
 	private Date orderItemUpdateDate; // 상품결제수정일
 	
+	private int finalPrice; // 최종결제금액
+	
 	public void initItemTotalPrice() {
 		this.itemTotalPrice = this.itemPrice * this.cartItemAmount;
 	}
@@ -44,6 +46,7 @@ public class OrderDto {
 	// 상품 정보 저장
 	public static OrderDto toOrderDto(ItemEntity itemEntity) {
 		OrderDto orderDto = new OrderDto();
+		orderDto.setItemNo(itemEntity.getItemNo());
 		orderDto.setItemTitle(itemEntity.getItemTitle());
 		orderDto.setItemPrice(itemEntity.getItemPrice());
 		orderDto.setStoredItemFile(itemEntity.getItemFileEntityList().getItemFileStoredFileName());

@@ -41,6 +41,7 @@
 					<input type="hidden" class="itemTotalCount" value="${cartOrderList.cartItemAmount}"> 
 					<input type="hidden" class="itemTotalPrice" value="${cartOrderList.itemTotalPrice}">
 					<input type="hidden" class="itemNo" value="${cartOrderList.itemNo}">
+					<input type="hidden" class="itemPayStatus" value="결제완료">
 				</td>
 			</tr>
 		</c:forEach>
@@ -67,45 +68,90 @@
 	<br />
 	
 	<!-- 가격 종합 -->
-		<div class="detailright">
+	<div class="detailright">
 
-			<h3>결제정보</h3>
+		<h3>결제정보</h3>
 
-			<div>총 상품 가격</div>
-			<div>
-				<p>
-					<span class="totalPrice_span">0</span>원
-				</p>
-			</div>
+		<div>총 상품 가격</div>
+		<div>
+			<p>
+				<span class="totalPrice_span">0</span>원
+			</p>
+		</div>
 
-			<div>배송비</div>
-			<div>
-				<p>
-					<span class="deliveryPrice_span">0</span>원
-				</p>
-			</div>
+		<div>배송비</div>
+		<div>
+			<p>
+				<span class="deliveryPrice_span">0</span>원
+			</p>
+		</div>
 
-			<div>총 주문 상품수</div>
-			<div>
-				<span class="totalKind_span">0</span>종 
-				<span class="totalCount_span">0</span>개
-			</div>
+		<div>총 주문 상품수</div>
+		<div>
+			<span class="totalKind_span">0</span>종 
+			<span class="totalCount_span">0</span>개
+		</div>
 
-			<hr>
+		<hr>
 
-			<div>
-				<div>최종 결제 금액</div>
-				<div class="strong_red">
-					<span class="finalTotalPrice_span"> 0 </span>원
-				</div>
+		<div>
+			<div>최종 결제 금액</div>
+			<div class="strong_red">
+				<span class="finalTotalPrice_span"> 0 </span>원
 			</div>
 		</div>
+	</div>
+	
 	<br />
-
-	<button type="button" class="btn btn-primary"
-		onclick="location.href='/order/success';">결제하기</button>
+	
+	<!-- 결제 버튼 -->
+	<button type="button" class="btn btn-primary" id="cartOrderBtn">결제하기</button>
+		
+	<!-- 결제 form -->
+	<form action="/order/success/${sessionScope.memberNo}" class="cartOrder" ></form>
 		
 	<script type="text/javascript">
+		
+		$("#cartOrderBtn").click(function(){
+			
+			let form_contents ='';
+			let orderNumber = 0;
+			
+			$(".cartOrderPrice").each(function(index, element){
+				
+				// 상품 넘버
+				let itemNo = $(element).find(".itemNo").val();
+				
+				// 상품 총 갯수
+				let cartItemAmount = $(element).find(".itemTotalCount").val();
+				
+				// 상품 총 가격
+				let itemTotalPrice = $(element).find(".itemTotalPrice").val();
+				
+				// 결제상태
+				let itemPayStatus = $(element).find(".itemPayStatus").val();
+				
+				let itemNo_input =  "<input name='orders[" + orderNumber + "].itemNo' type='hidden' value='" + itemNo + "'>";
+				form_contents += itemNo_input;
+				
+				let cartItemAmount_input = "<input name='orders[" + orderNumber + "].cartItemAmount' type='hidden' value='" + cartItemAmount + "'>";
+				form_contents += cartItemAmount_input;
+				
+				let itemTotalPrice_input = "<input name='orders[" + orderNumber + "].itemTotalPrice' type='hidden' value='" + itemTotalPrice + "'>";
+				form_contents += itemTotalPrice_input;
+				
+				let itemPayStatus_input = "<input name='orders[" + orderNumber + "].itemPayStatus' type='hidden' value='" + itemPayStatus + "'>";
+				form_contents += itemPayStatus_input;
+				
+				orderNumber += 1;
+				
+			});
+			
+			$(".cartOrder").html(form_contents);
+			$(".cartOrder").submit();
+			
+		});
+	
 		$(document).ready(function(){
 		
 			// 주문 정보 최신화

@@ -9,8 +9,10 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.shop.dto.OrderDto;
+import com.shop.dto.OrderListDto;
 import com.shop.entity.ItemEntity;
 import com.shop.entity.MemberEntity;
+import com.shop.entity.OrderEntity;
 import com.shop.repository.ItemRepository;
 import com.shop.repository.MemberRepository;
 import com.shop.repository.OrderRepository;
@@ -69,6 +71,35 @@ public class OrderServiceImpl implements OrderService {
 		}
 		
 		return null;
+	}
+
+	// 결제완료
+	@Override
+	public void orderSave(Long memberNo, List<OrderDto> orders) throws Exception {
+		
+		System.out.println("orders : " +orders);
+		
+		Optional<MemberEntity> memberEntityOptional = memberRepository.findById(memberNo);
+		
+		MemberEntity memberEntity = memberEntityOptional.get();
+		
+		System.out.println("memberEntity : "+memberEntity.getMemberNo());
+
+		for(OrderDto ord : orders) {
+			System.out.println("ord : "+ord);
+			
+			// 상품 정보 조회
+			Optional<ItemEntity> itemInfo = itemRepository.findById(ord.getItemNo());
+			ItemEntity itemEntity = itemInfo.get();
+			
+			// 주문 Dto에 상품 정보 저장
+			OrderEntity orderEntity = OrderEntity.toOrderSave(memberEntity, ord, itemEntity);
+			
+			System.out.println("orderEntity : "+ orderEntity);
+			orderRepository.save(orderEntity);
+			
+		}
+		
 	}
 	
 }

@@ -148,7 +148,7 @@
 		</div>
 
 		<!-- 주문버튼 -->
-		<button type="button" class="btn btn-primary" id="cartOrderBtn">주문하기</button>
+		<button type="button" class="btn btn-primary" id="cartOrderPageBtn">주문하기</button>
 		
 		<!-- 일괄삭제 버튼 -->
 		<button type="button" class="btn btn-primary" id="cartCheckDelete">선택삭제</button>
@@ -176,7 +176,7 @@
 		});
 	
 		// 주문하기 버튼 클릭시 발생
-		$("#cartOrderBtn").click(function(){
+		$("#cartOrderPageBtn").click(function(){
 			
 			let cartCheckbox = $(".cartCheckbox");
 			

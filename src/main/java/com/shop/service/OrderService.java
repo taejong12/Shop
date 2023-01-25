@@ -3,6 +3,7 @@ package com.shop.service;
 import java.util.List;
 
 import com.shop.dto.OrderDto;
+import com.shop.dto.OrderListDto;
 
 public interface OrderService {
 
@@ -11,6 +12,9 @@ public interface OrderService {
 
 	// 주문하기 회원정보
 	OrderDto memberInfo(Long memberNo) throws Exception;
+
+	// 결제완료
+	void orderSave(Long memberNo, List<OrderDto> orders) throws Exception;
 
 	
 }

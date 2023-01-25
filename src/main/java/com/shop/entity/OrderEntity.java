@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.shop.dto.OrderDto;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +45,21 @@ public class OrderEntity extends BaseEntity {
 	@JoinColumn(name="item_no")
 	private ItemEntity itemEntity;
 	
+	private int itemCount;
+	
+	private int itemTotalPrice;
+	
+	private String itemPayStatus;
+
+	public static OrderEntity toOrderSave(MemberEntity memberEntity, OrderDto orders, ItemEntity itemEntity) {
+		OrderEntity orderEntity = new OrderEntity();
+		orderEntity.setMemberEntity(memberEntity);
+		orderEntity.setItemEntity(itemEntity);
+		orderEntity.setItemCount(orders.getCartItemAmount());
+		orderEntity.setItemTotalPrice(orders.getItemTotalPrice());
+		orderEntity.setItemPayStatus(orders.getItemPayStatus());
+		return orderEntity;
+	}
 	
 	
 	
