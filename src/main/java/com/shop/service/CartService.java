@@ -25,5 +25,4 @@ public interface CartService {
 	// 장바구니 수량 수정
 	public void cartItemAmountModify(CartDto cartDto) throws Exception;
 
-	
 }

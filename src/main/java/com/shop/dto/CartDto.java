@@ -22,6 +22,7 @@ public class CartDto {
 	private String itemTitle; //상품명
 	private int itemPrice; //상품가격
 	private int cartItemAmount; // 상품 총 갯수
+	private int itemStock; // 상품 재고
 	private Date cartItemCreateDate; // 장바구니 상품등록일
 	private Date cartItemUpdateDate; // 장바구니 상품수정일
 	
@@ -47,7 +48,7 @@ public class CartDto {
 	
 	// 페이징 장바구니 목록
 	public CartDto(Long cartNo, Long memberNo, Long itemNo, String storedItemFile, String itemTitle, int itemPrice,
-			int cartItemAmount, Date cartItemCreateDate, Date cartItemUpdateDate) {
+			int cartItemAmount, Date cartItemCreateDate, Date cartItemUpdateDate, int itemStock) {
 		this.cartNo = cartNo;
 		this.memberNo = memberNo;
 		this.itemNo = itemNo;
@@ -57,6 +58,7 @@ public class CartDto {
 		this.cartItemAmount = cartItemAmount;
 		this.cartItemCreateDate = cartItemCreateDate;
 		this.cartItemUpdateDate = cartItemUpdateDate;
+		this.itemStock = itemStock;
 	}
 
 	// 장바구니 확인

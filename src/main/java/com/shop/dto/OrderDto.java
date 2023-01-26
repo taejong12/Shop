@@ -20,6 +20,7 @@ public class OrderDto {
 	private Long orderNo; // 주문 넘버
 	private Long itemNo; // 상품 넘버
 	private Long memberNo; // 회원 넘버
+	private Long cartNo; // 장바구니 넘버
 	
 	// 상품 테이블
 	private String storedItemFile; // 상품 이미지 이름
@@ -45,12 +46,22 @@ public class OrderDto {
 	}
 
 	// 상품 정보 저장
-	public static OrderDto toOrderDto(ItemEntity itemEntity) {
+	public static OrderDto toOrderDto(ItemEntity itemEntity, OrderDto ord) {
 		OrderDto orderDto = new OrderDto();
 		orderDto.setItemNo(itemEntity.getItemNo());
 		orderDto.setItemTitle(itemEntity.getItemTitle());
 		orderDto.setItemPrice(itemEntity.getItemPrice());
 		orderDto.setStoredItemFile(itemEntity.getItemFileEntityList().getItemFileStoredFileName());
+
+		// 장바구니 넘버 Dto에 저장
+		orderDto.setCartNo(ord.getCartNo());
+					
+		// 받아온 상품 갯수와 가격 Dto에 저장
+		orderDto.setCartItemAmount(ord.getCartItemAmount());
+		
+		// 상품 가격 + 총 갯수
+		orderDto.initItemTotalPrice();
+		
 		return orderDto;
 	}
 

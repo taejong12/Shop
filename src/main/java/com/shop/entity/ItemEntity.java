@@ -86,7 +86,7 @@ public class ItemEntity extends BaseEntity{
 	@OneToMany(mappedBy = "itemEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<CartEntity> cartEntityList = new ArrayList<>();
 	
-	
+	// 상품 등록
 	public static ItemEntity toWriteItemSaveEntity(ItemDto itemDto) {
 		ItemEntity itemEntity = new ItemEntity();
 		itemEntity.setItemTitle(itemDto.getItemTitle());
@@ -99,6 +99,7 @@ public class ItemEntity extends BaseEntity{
 		return itemEntity;
 	}
 
+	// 상품 수정
 	public static ItemEntity toUpdateEntity(ItemDto itemDto) {
 		ItemEntity itemEntity = new ItemEntity();
 		itemEntity.setItemNo(itemDto.getItemNo());
@@ -112,6 +113,7 @@ public class ItemEntity extends BaseEntity{
 		return itemEntity;
 	}
 	
+	// 파일 저장
 	public static ItemEntity toSaveFileEntity(ItemDto itemDto) {
 		ItemEntity itemEntity = new ItemEntity();
 		itemEntity.setItemTitle(itemDto.getItemTitle());
@@ -120,6 +122,20 @@ public class ItemEntity extends BaseEntity{
 		itemEntity.setItemStock(itemDto.getItemStock());
 		itemEntity.setItemHits(0);
 		itemEntity.setItemFileAttached(1); // 파일 있음.
+		
+		return itemEntity;
+	}
+
+	// 결제시 재고 차감, 결제 취소시 재고 증가
+	public static ItemEntity toOrderUpdate(ItemDto itemDto) {
+		ItemEntity itemEntity = new ItemEntity();
+		itemEntity.setItemNo(itemDto.getItemNo());
+		itemEntity.setItemContent(itemDto.getItemContent());
+		itemEntity.setItemFileAttached(itemDto.getItemFileAttached());
+		itemEntity.setItemHits(itemDto.getItemHits());
+		itemEntity.setItemPrice(itemDto.getItemPrice());
+		itemEntity.setItemStock(itemDto.getItemStock());
+		itemEntity.setItemTitle(itemDto.getItemTitle());
 		
 		return itemEntity;
 	}

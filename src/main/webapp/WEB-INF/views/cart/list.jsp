@@ -16,6 +16,15 @@
 	rel="stylesheet"
 	integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
 	crossorigin="anonymous">
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			if("${sessionScope.memberNo}" == null || "${sessionScope.memberNo}" == ""){
+				location="/member/login";
+			}
+		});
+	</script>
+	
 </head>
 <body class="text-center">
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
@@ -41,6 +50,7 @@
 						<input type="hidden" class="itemTotalCount" value="${cartList.cartItemAmount}"> 
 						<input type="hidden" class="itemTotalPrice" value="${cartList.itemPrice * cartList.cartItemAmount}">
 						<input type="hidden" class="itemNo" value="${cartList.itemNo}">
+						<input type="hidden" class="cartNo" value="${cartList.cartNo}">						
 						<input type="checkbox" name="cartCheckbox"
 							class="cartCheckbox" data-cartNo="${cartList.cartNo}">
 					</td>
@@ -51,6 +61,7 @@
 					<td>${cartList.itemPrice}원</td>
 					<td>
 						<div>
+							<input type="hidden" class="itemStock" value="${cartList.itemStock}">
 							<input type="hidden" name="itemNo" class="itemNo"
 								value="${cartList.itemNo}" />
 							<button type="button" class="cartItemPlus">+</button>
@@ -216,12 +227,18 @@
 					// 장바구니 총 갯수
 					let cartItemAmount = $(element).find(".itemTotalCount").val();
 					
+					// 장바구니 넘버
+					let cartNo = $(element).find(".cartNo").val();
+					
 					// 두 변수의 값과 index(each 메서드 첫 번째 인자) 값을 활용해서 서버로 전송되어야 할 <input> 태그를 문자열 값을 만들어내고 앞서 선언한 form_contents 변수에 문자열을 더해줍니다.
 					let itemNo_input =  "<input name='orders[" + orderNumber + "].itemNo' type='hidden' value='" + itemNo + "'>";
 					form_contents += itemNo_input;
 					
 					let cartItemAmount_input = "<input name='orders[" + orderNumber + "].cartItemAmount' type='hidden' value='" + cartItemAmount + "'>";
 					form_contents += cartItemAmount_input;
+					
+					let cartNo_input = "<input name='orders[" + orderNumber + "].cartNo' type='hidden' value='" + cartNo + "'>";
+					form_contents += cartNo_input;
 					
 					// 그리고 idnex값 역할을 하는 orderNumber는 다음 객체에 접근할 때 +1이 될 수 있도록 코드를 추가합니다.
 					orderNumber += 1;
@@ -323,11 +340,24 @@
 				// 클릭한 상품의 장바구니 총 갯수 값
 				const cartItemAmountModify = $(this).parent('div').find("input[name=cartItemAmount]").val();
 				
+				// 클릭한 상품의 재고
+				const itemStock = $(this).parent('div').find("input[class='itemStock']").val();
+				
 				// 클릭한 상품의 넘버
 				const itemNo = $(this).parent('div').find("input[class='itemNo']").val();
 				
 				// 클릭한 상품의 장바구니 넘버
 				const cartNo = $(this).data("cartno");
+				
+				if(cartItemAmountModify < 1){
+					alert("1개 이상 선택해주세요.");
+					return false;
+				}
+				
+				if(cartItemAmountModify > itemStock){
+					alert("재고수량이 "+ itemStock +" 개 남았습니다.");
+					return false;
+				}
 				
 				const cartItemAmountModifyData = {		
 					"memberNo" : ${sessionScope.memberNo},

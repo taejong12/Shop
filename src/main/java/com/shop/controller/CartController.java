@@ -39,7 +39,6 @@ public class CartController {
 		int blockLimit =3; 
 		int startPage =(((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; 
 		int endPage = ((startPage + blockLimit - 1) < cartList.getTotalPages()) ? startPage + blockLimit - 1 : cartList.getTotalPages();
-		
 		model.addAttribute("cartList", cartList); 
 		model.addAttribute("startPage", startPage); 
 		model.addAttribute("endPage", endPage); 

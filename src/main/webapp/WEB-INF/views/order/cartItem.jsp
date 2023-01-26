@@ -10,11 +10,17 @@
 	integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
 	crossorigin="anonymous"></script>
 	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			if("${sessionScope.memberNo}" == null || "${sessionScope.memberNo}" == ""){
+				location="/member/login";
+			}
+		});
+	</script>
 </head>
 <body class="text-center">
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
-
 
 	<h2>주문하기</h2>
 
@@ -42,6 +48,7 @@
 					<input type="hidden" class="itemTotalPrice" value="${cartOrderList.itemTotalPrice}">
 					<input type="hidden" class="itemNo" value="${cartOrderList.itemNo}">
 					<input type="hidden" class="itemPayStatus" value="결제완료">
+					<input type="hidden" class="cartNo" value="${cartOrderList.cartNo}">
 				</td>
 			</tr>
 		</c:forEach>
@@ -131,6 +138,9 @@
 				// 결제상태
 				let itemPayStatus = $(element).find(".itemPayStatus").val();
 				
+				// 장바구니 넘버
+				let cartNo = $(element).find(".cartNo").val();
+				
 				let itemNo_input =  "<input name='orders[" + orderNumber + "].itemNo' type='hidden' value='" + itemNo + "'>";
 				form_contents += itemNo_input;
 				
@@ -142,6 +152,9 @@
 				
 				let itemPayStatus_input = "<input name='orders[" + orderNumber + "].itemPayStatus' type='hidden' value='" + itemPayStatus + "'>";
 				form_contents += itemPayStatus_input;
+				
+				let cartNo_input = "<input name='orders[" + orderNumber + "].cartNo' type='hidden' value='" + cartNo + "'>";
+				form_contents += cartNo_input;
 				
 				orderNumber += 1;
 				

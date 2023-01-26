@@ -56,9 +56,10 @@
 			<tr>
 				<th>상품수량</th>
 				<td>
-				<input class="volumebtn btn btn-light" type="button" value=" + " onclick="itemAdd();">
-				<input type="text" id="itemAmount" value="0" onkeyup="itemAmountChange(this);" onkeydown="if(event.keyCode=='13'){event.preventDefault();}"/>
-				<input class="volumebtn btn btn-light" type="button" value=" - " onclick="itemDel();">
+					<input type="hidden" class="itemStock" value="${itemDetailList.itemStock}"/>
+					<input class="volumebtn btn btn-light" type="button" value=" + " onclick="itemAdd();">
+					<input type="text" id="itemAmount" value="0" onkeyup="itemAmountChange(this);" onkeydown="if(event.keyCode=='13'){event.preventDefault();}"/>
+					<input class="volumebtn btn btn-light" type="button" value=" - " onclick="itemDel();">
 				</td>
 			</tr>
 			
@@ -113,6 +114,14 @@
 				alert("수량을 선택해주세요.");
 				return false;
 			}
+			
+			const itemStock = $(".itemStock").val();
+			
+			if(document.getElementById("itemAmount").value > itemStock){
+				alert("재고수량이 "+ itemStock +" 개 남았습니다.");
+				return false;
+			}
+			
 			
 			const itemAmountValue = document.getElementById("itemAmount").value;
 			
@@ -196,6 +205,7 @@
 		let itemPrice;
 		let itemPriceSum;
 		
+		// 상품 수량 증가
 		function itemAdd(){
 			itemAmount = document.getElementById("itemAmount");
 			itemAmount.value ++ ;
@@ -211,6 +221,7 @@
 			
 		}
 		
+		// 상품 수량 감소
 		function itemDel(){
 			itemAmount = document.getElementById("itemAmount");
 			itemPrice = "${itemDetailList.itemPrice}";
@@ -228,6 +239,7 @@
 			}
 		}
 		
+		// 총 상품 수량
 		function itemAmountChange(itemAmount){
 			
 			itemAmount.value=itemAmount.value.replace(/(^0+)/g, "").trim();

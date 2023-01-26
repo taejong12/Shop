@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.shop.dto.CartDto;
+import com.shop.dto.ItemDto;
 import com.shop.dto.OrderDto;
 
 public interface OrderService {
@@ -24,6 +25,5 @@ public interface OrderService {
 
 	// 결제 취소
 	public void orderCancel(OrderDto orderDto) throws Exception;
-
 	
 }

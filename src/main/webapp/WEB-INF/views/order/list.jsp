@@ -15,6 +15,14 @@
 	rel="stylesheet"
 	integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
 	crossorigin="anonymous">
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			if("${sessionScope.memberNo}" == null || "${sessionScope.memberNo}" == ""){
+				location="/member/login";
+			}
+		});
+	</script>
 </head>
 <body class="text-center">
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
@@ -54,6 +62,7 @@
 					<input type="hidden" class="itemNo" value="${orderList.itemNo}"/>
 					<input type="hidden" class="itemCount" value="${orderList.cartItemAmount}"/>
 					<input type="hidden" class="itemTotalPrice" value="${orderList.itemTotalPrice}"/>
+					<!-- 결제 취소시 취소한 날짜 출력 -->
 					<c:if test="${orderList.itemPayStatus != '결제취소'}">
 						<button type="button" class="btn btn-primary" id="orderCancel">결제취소</button>
 					</c:if>

@@ -105,7 +105,7 @@ public class CartServiceImpl implements CartService {
 		Page<CartEntity> cartEntities = cartRepository.findByMemberEntity(memberEntity.get(), PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "cartNo")));
 		
 		// 페이지 객체 변환
-		Page<CartDto> cartPage = cartEntities.map(cart -> new CartDto(cart.getCartNo(), cart.getMemberEntity().getMemberNo(), cart.getItemEntity().getItemNo(), cart.getItemEntity().getItemFileEntityList().getItemFileStoredFileName(), cart.getItemEntity().getItemTitle(), cart.getItemEntity().getItemPrice(), cart.getCartItemAmount(), cart.getCreatedTime(), cart.getUpdatedTime()));
+		Page<CartDto> cartPage = cartEntities.map(cart -> new CartDto(cart.getCartNo(), cart.getMemberEntity().getMemberNo(), cart.getItemEntity().getItemNo(), cart.getItemEntity().getItemFileEntityList().getItemFileStoredFileName(), cart.getItemEntity().getItemTitle(), cart.getItemEntity().getItemPrice(), cart.getCartItemAmount(), cart.getCreatedTime(), cart.getUpdatedTime(), cart.getItemEntity().getItemStock()));
 		
 		return cartPage;
 	}
