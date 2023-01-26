@@ -36,7 +36,7 @@ public class OrderDto {
 	
 	private String itemPayStatus; // 결제상태
 	private Date orderItemCreateDate; // 상품결제일
-	private Date orderItemUpdateDate; // 상품결제수정일
+	private Date orderItemUpdateDate; // 상품결제취소일
 	
 	private int finalPrice; // 최종결제금액
 	

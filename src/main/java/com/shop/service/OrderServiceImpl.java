@@ -122,5 +122,16 @@ public class OrderServiceImpl implements OrderService {
 				
 		return orderPage;
 	}
+
+	// 결제취소
+	@Override
+	public void orderCancel(OrderDto orderDto) throws Exception {
+		Optional<MemberEntity> memberEntity = memberRepository.findById(orderDto.getMemberNo());
+		Optional<ItemEntity> itemEntity = itemRepository.findById(orderDto.getItemNo());
+		
+		OrderEntity orderEntity = OrderEntity.toOrderCancel(orderDto, itemEntity.get(), memberEntity.get());
+		orderRepository.save(orderEntity);
+		
+	}
 	
 }

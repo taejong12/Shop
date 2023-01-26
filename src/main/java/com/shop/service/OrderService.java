@@ -22,5 +22,8 @@ public interface OrderService {
 	// 주문내역 목록
 	public Page<OrderDto> orderPaging(Pageable pageable, Long memberNo) throws Exception;
 
+	// 결제 취소
+	public void orderCancel(OrderDto orderDto) throws Exception;
+
 	
 }

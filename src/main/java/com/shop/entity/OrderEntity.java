@@ -51,6 +51,7 @@ public class OrderEntity extends BaseEntity {
 	
 	private String itemPayStatus;
 
+	// 주문 성공시 주문내역 저장
 	public static OrderEntity toOrderSave(MemberEntity memberEntity, OrderDto orders, ItemEntity itemEntity) {
 		OrderEntity orderEntity = new OrderEntity();
 		orderEntity.setMemberEntity(memberEntity);
@@ -58,6 +59,18 @@ public class OrderEntity extends BaseEntity {
 		orderEntity.setItemCount(orders.getCartItemAmount());
 		orderEntity.setItemTotalPrice(orders.getItemTotalPrice());
 		orderEntity.setItemPayStatus(orders.getItemPayStatus());
+		return orderEntity;
+	}
+
+	// 결제 취소
+	public static OrderEntity toOrderCancel(OrderDto orderDto, ItemEntity itemEntity, MemberEntity memberEntity) {
+		OrderEntity orderEntity = new OrderEntity();
+		orderEntity.setOrderNo(orderDto.getOrderNo());
+		orderEntity.setItemEntity(itemEntity);
+		orderEntity.setMemberEntity(memberEntity);
+		orderEntity.setItemCount(orderDto.getCartItemAmount());
+		orderEntity.setItemPayStatus(orderDto.getItemPayStatus());
+		orderEntity.setItemTotalPrice(orderDto.getItemTotalPrice());
 		return orderEntity;
 	}
 	
