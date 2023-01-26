@@ -45,8 +45,18 @@ public class OrderController {
 	}
 	
 	// 상품 상세보기 결제페이지
-	@GetMapping("/item/{itemNo}")
-	public String orderItem(@PathVariable("itemNo") Long itemNo) {
+	@GetMapping("/item/{memberNo}")
+	public String orderItem(@PathVariable("memberNo") Long memberNo, @ModelAttribute OrderDto orderDto, Model model) throws Exception{
+		
+		System.out.println("orderDto : "+orderDto);
+
+		// 상품 목록
+		model.addAttribute("itemDetailOrderList", orderService.itemDetailOrderList(orderDto));
+		
+		System.out.println("itemDetailOrderList : "+ orderService.itemDetailOrderList(orderDto));
+		
+		// 회원 정보
+		model.addAttribute("memberInfo", orderService.memberInfo(memberNo));
 		
 		return "/order/item";
 	}

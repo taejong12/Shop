@@ -108,8 +108,11 @@ public class OrderServiceImpl implements OrderService {
 
 				System.out.println("ord.getCartNo() : "+ord.getCartNo());
 				
-				// 구매한 상품의 장바구니 삭제
-				cartRepository.deleteById(ord.getCartNo());
+				if(ord.getCartNo() != null) {
+					
+					// 구매한 상품의 장바구니 삭제
+					cartRepository.deleteById(ord.getCartNo());
+				}
 				
 				// 주문 상품 정보 저장
 				OrderEntity orderEntity = OrderEntity.toOrderSave(memberEntity, ord, itemEntity);
@@ -158,5 +161,18 @@ public class OrderServiceImpl implements OrderService {
 		orderRepository.save(orderEntity);
 		
 	}
-	
+
+	// 상품 상세보기 결제 페이지
+	@Override
+	public OrderDto itemDetailOrderList(OrderDto orderDto) throws Exception {
+
+		// 상품 정보 조회
+		Optional<ItemEntity> itemInfo = itemRepository.findById(orderDto.getItemNo());
+		ItemEntity itemEntity = itemInfo.get();
+		
+		// 주문 Dto에 상품 정보 저장
+		OrderDto orderDetail = OrderDto.toOrderDto(itemEntity, orderDto);
+			
+		return orderDetail;
+	}
 }

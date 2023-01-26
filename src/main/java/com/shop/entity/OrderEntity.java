@@ -52,13 +52,13 @@ public class OrderEntity extends BaseEntity {
 	private String itemPayStatus;
 
 	// 주문 성공시 주문내역 저장
-	public static OrderEntity toOrderSave(MemberEntity memberEntity, OrderDto orders, ItemEntity itemEntity) {
+	public static OrderEntity toOrderSave(MemberEntity memberEntity, OrderDto orderDto, ItemEntity itemEntity) {
 		OrderEntity orderEntity = new OrderEntity();
 		orderEntity.setMemberEntity(memberEntity);
 		orderEntity.setItemEntity(itemEntity);
-		orderEntity.setItemCount(orders.getCartItemAmount());
-		orderEntity.setItemTotalPrice(orders.getItemTotalPrice());
-		orderEntity.setItemPayStatus(orders.getItemPayStatus());
+		orderEntity.setItemCount(orderDto.getCartItemAmount());
+		orderEntity.setItemTotalPrice(orderDto.getItemTotalPrice());
+		orderEntity.setItemPayStatus(orderDto.getItemPayStatus());
 		return orderEntity;
 	}
 

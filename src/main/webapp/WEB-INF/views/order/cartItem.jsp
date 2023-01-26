@@ -119,6 +119,7 @@
 		
 	<script type="text/javascript">
 		
+		// 결제하기 버튼 클릭시
 		$("#cartOrderBtn").click(function(){
 			
 			let form_contents ='';

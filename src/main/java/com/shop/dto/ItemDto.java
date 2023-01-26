@@ -95,7 +95,7 @@ public class ItemDto {
 	}
 
 	// 결제시 재고 차감
-	public static ItemDto toOrderItem(ItemEntity itemEntity, OrderDto ord) {
+	public static ItemDto toOrderItem(ItemEntity itemEntity, OrderDto orderDto) {
 		ItemDto itemDto = new ItemDto();
 		itemDto.setItemNo(itemEntity.getItemNo());
 		itemDto.setItemCreateDate(itemEntity.getCreatedTime());
@@ -104,7 +104,7 @@ public class ItemDto {
 		itemDto.setItemFileAttached(itemEntity.getItemFileAttached());
 		itemDto.setItemHits(itemEntity.getItemHits());
 		itemDto.setItemPrice(itemEntity.getItemPrice());
-		itemDto.setItemStock(itemEntity.getItemStock()-ord.getCartItemAmount());
+		itemDto.setItemStock(itemEntity.getItemStock()-orderDto.getCartItemAmount());
 		itemDto.setItemTitle(itemEntity.getItemTitle());
 		return itemDto;
 	}

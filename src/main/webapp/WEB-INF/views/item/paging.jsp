@@ -48,15 +48,28 @@
 			</c:when>
 			<c:otherwise>
 				<c:forEach items="${itemList.content}" var="itemList">
-					<tr>
-						<td><img src="/upload/${itemList.storedItemFile}" alt="이미지"
-							style="width: 100px; height: 100px;"></td>
-						<td><a href="/item/detail/${itemList.itemNo}">${itemList.itemTitle}</a></td>
-						<td>${itemList.itemPrice}원</td>
-						<td>${itemList.itemStock}개</td>
-						<td>${itemList.itemHits}회</td>
-						<td>${itemList.itemCreateDate}</td>
-					</tr>
+					<c:if test="${itemList.itemStock < 1}">
+						<tr>
+							<td><img src="/upload/${itemList.storedItemFile}" alt="이미지"
+								style="width: 100px; height: 100px;"></td>
+							<td><a href="/item/detail/${itemList.itemNo}">${itemList.itemTitle}</a></td>
+							<td>${itemList.itemPrice}원</td>
+							<td>품절</td>
+							<td>${itemList.itemHits}회</td>
+							<td>${itemList.itemCreateDate}</td>
+						</tr>
+					</c:if>
+					<c:if test="${itemList.itemStock > 0}">
+						<tr>
+							<td><img src="/upload/${itemList.storedItemFile}" alt="이미지"
+								style="width: 100px; height: 100px;"></td>
+							<td><a href="/item/detail/${itemList.itemNo}">${itemList.itemTitle}</a></td>
+							<td>${itemList.itemPrice}원</td>
+							<td>${itemList.itemStock}개</td>
+							<td>${itemList.itemHits}회</td>
+							<td>${itemList.itemCreateDate}</td>
+						</tr>
+					</c:if>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>

@@ -18,7 +18,9 @@
 	<%@ include file="/WEB-INF/views/include/navbar.jsp"%>
 
 	<h2>상품 상세보기</h2>
-	<form>
+	<form action="/order/item/${sessionScope.memberNo}" id="form">
+		<input type="hidden" name="itemNo" value="${itemDetailList.itemNo}"/>
+		
 		<table class="table table-striped table-hover">
 			<c:if test="${itemDetailList.itemFileAttached == 1}">
 				<tr>
@@ -58,7 +60,7 @@
 				<td>
 					<input type="hidden" class="itemStock" value="${itemDetailList.itemStock}"/>
 					<input class="volumebtn btn btn-light" type="button" value=" + " onclick="itemAdd();">
-					<input type="text" id="itemAmount" value="0" onkeyup="itemAmountChange(this);" onkeydown="if(event.keyCode=='13'){event.preventDefault();}"/>
+					<input type="text" id="itemAmount" name="cartItemAmount" value="0" onkeyup="itemAmountChange(this);" onkeydown="if(event.keyCode=='13'){event.preventDefault();}"/>
 					<input class="volumebtn btn btn-light" type="button" value=" - " onclick="itemDel();">
 				</td>
 			</tr>
@@ -76,7 +78,7 @@
 				<button type="button" class="btn btn-primary"
 					onclick="cartItemCheck()">장바구니 추가</button>&nbsp
 				<button type="button" class="btn btn-primary"
-					onclick="location.href='/order/item/${itemDetailList.itemNo}';">주문하기</button>&nbsp
+					onclick="itemDetailOrder()">주문하기</button>&nbsp
 				<button type="button" class="btn btn-primary"
 					onclick="location.href='/item/update/${itemDetailList.itemNo}';">수정</button>&nbsp
 				<button type="button" class="btn btn-primary"
@@ -96,6 +98,27 @@
 	<!-- 로그인시 그 전에 보던 페이지로 이동(할일) -->
 	
 	<script type="text/javascript">
+		
+		// 주문하기 버튼 클릭시
+		function itemDetailOrder(){
+			
+const itemAmount = parseInt(document.getElementById("itemAmount").value);
+			
+			if(itemAmount <= 0){
+				alert("수량을 선택해주세요.");
+				return false;
+			}
+			
+			const itemStock =parseInt($(".itemStock").val());
+			
+			if(itemAmount > itemStock){
+				alert("재고수량이 "+ itemStock +" 개 남았습니다.");
+				return false;
+			}
+			
+			document.getElementById("form").submit();
+			
+		}
 	
 		// 삭제 버튼 클릭시
 		function itmeDeleteCheck(){
@@ -110,14 +133,16 @@
 		// 장바구니 버튼 클릭시
 		function cartItemCheck(){
 			
-			if(document.getElementById("itemAmount").value <= 0){
+			const itemAmount = parseInt(document.getElementById("itemAmount").value);
+			
+			if(itemAmount <= 0){
 				alert("수량을 선택해주세요.");
 				return false;
 			}
 			
-			const itemStock = $(".itemStock").val();
+			const itemStock =parseInt($(".itemStock").val());
 			
-			if(document.getElementById("itemAmount").value > itemStock){
+			if(itemAmount > itemStock){
 				alert("재고수량이 "+ itemStock +" 개 남았습니다.");
 				return false;
 			}

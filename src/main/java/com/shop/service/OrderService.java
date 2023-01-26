@@ -25,5 +25,8 @@ public interface OrderService {
 
 	// 결제 취소
 	public void orderCancel(OrderDto orderDto) throws Exception;
+
+	// 상품 상세보기 결제 페이지
+	public OrderDto itemDetailOrderList(OrderDto orderDto) throws Exception;
 	
 }
