@@ -19,6 +19,12 @@
 		<h2>로그인</h2>
 		<form action="/member/login" method="post"
 			onsubmit="loginCheck(this); return false;">
+			<c:if test="${param.error}">
+	            Invalid Id and password.
+	        </c:if>
+	        <c:if test="${param.logout}">
+	            You have been logged out.
+	       	</c:if>
 			<table class="table table-striped table-hover">
 				<tr>
 					<th>아이디</th>
@@ -52,6 +58,7 @@
 				form.memberPassword.focus();
 				return false;
 			}
+			
 			
 			$.ajax({
 				type:"post",

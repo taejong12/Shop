@@ -146,17 +146,22 @@ public class ItemController {
 	public String paging(@PageableDefault(page = 1) Pageable pageable, Model model, 
 						@RequestParam(required = false, defaultValue = "") String searchText) throws Exception {
 		//pageable.getPageNumber();
+		
 		Page<ItemDto> itemList = itemService.paging(pageable, searchText);
-		int blockLimit =3;
-		int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-		int endPage = ((startPage + blockLimit - 1) < itemList.getTotalPages()) ? startPage + blockLimit - 1 : itemList.getTotalPages();
-		
-		model.addAttribute("itemList", itemList);
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-		// System.out.println("itemList : ======" + itemList.getContent());
+			if(itemList != null) {
+				
+			int blockLimit =3;
+			int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+			int endPage = ((startPage + blockLimit - 1) < itemList.getTotalPages()) ? startPage + blockLimit - 1 : itemList.getTotalPages();
+			
+			model.addAttribute("itemList", itemList);
+			model.addAttribute("startPage", startPage);
+			model.addAttribute("endPage", endPage);
+			// System.out.println("itemList : ======" + itemList.getContent());
+			return "/item/paging";
+		}
+			
 		return "/item/paging";
-		
 	}
 	
 }

@@ -51,6 +51,7 @@ public class MemberController {
 		return "/member/login";
 	}
 	
+	// 아이디 확인
 	@PostMapping("/loginCheck")
 	public @ResponseBody MemberDto loginCheck(@RequestParam("memberId") String memberId) throws Exception {
 		MemberDto memberDto = memberService.idCheck(memberId);

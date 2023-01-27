@@ -206,6 +206,8 @@ public class ItemServiceImpl implements ItemService {
 		int pageLimit =3; // 한 페이지에 보여줄 글 갯수
 		// 한 페이지당 3개씩 글을 보여주고 정렬 기준은 memberNo 기준으로 내림차순 정렬
 		// page 위치에 있는 값은 0부터 시작 그래서 -1빼고 시작함
+		
+	
 		Page<ItemEntity> itemEntities = itemRepository.findByItemTitleContainingOrItemContentContaining(searchText, searchText, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "itemNo")));
 
 		System.out.println("itemEntities.getContent() =" + itemEntities.getContent()); // 요청 페이지에 해당하는 글
@@ -217,6 +219,7 @@ public class ItemServiceImpl implements ItemService {
 		System.out.println("itemEntities.isFirst() =" + itemEntities.isFirst()); // 첫 페이지 여부
 		System.out.println("itemEntities.isLast() =" + itemEntities.isLast()); // 마지막 페이지 여부
 
+
 		itemEntities.getSize();
 		itemEntities.getContent().get(0).getItemFileAttached();
 		
@@ -225,7 +228,9 @@ public class ItemServiceImpl implements ItemService {
 				item.getItemPrice(), item.getItemStock(), item.getItemHits(), item.getCreatedTime(),
 				item.getItemFileEntityList().getItemFileStoredFileName(), item.getItemFileAttached()));
 		return itemDtos;
+	
 		
+	
 	}
 
 
